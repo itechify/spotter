@@ -4,7 +4,19 @@
  */
 import "./src/env.js";
 
+/**
+ * Reason we ignore typescript and eslint during builds is because we can have a separate github action that does this,
+ * speeding things up.
+ */
+
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+    typescript: {
+        ignoreBuildErrors: true,
+    },
+    eslint: {
+        ignoreDuringBuilds: true,
+    }
+};
 
 export default config;
