@@ -11,11 +11,11 @@ export const metadata: Metadata = {
 
 function TopNav() {
   return (
-    <nav className="flex items-center justify-between w-full p-4 text-xl font-semibold border-b">
+    <nav className="flex w-full items-center justify-between border-b p-4 text-xl font-semibold">
       <div>Spotter List</div>
       <div>Sign In</div>
-      </nav>
-  )
+    </nav>
+  );
 }
 
 export default function RootLayout({
@@ -23,10 +23,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body className='flex-col gap-4'>
+      <body className="flex flex-col gap-4">
         <TopNav />
         {children}
-        </body>
+      </body>
     </html>
   );
 }
