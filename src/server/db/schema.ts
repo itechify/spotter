@@ -18,19 +18,24 @@ import {
  */
 export const createTable = pgTableCreator((name) => `spotter_${name}`);
 
-export const posts = createTable(
-  "post",
+export const boulders = createTable(
+  "boulder",
   {
     id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
-    name: varchar("name", { length: 256 }),
+    name: varchar("name", { length: 256 }).notNull(),
+    url: varchar("url", { length: 1024 }).notNull(),
+    grade: varchar("grade", {
+      length: 256,
+    }).notNull(),
+    rating: integer("rating").notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-      () => new Date()
+      () => new Date(),
     ),
   },
   (example) => ({
     nameIndex: index("name_idx").on(example.name),
-  })
+  }),
 );
