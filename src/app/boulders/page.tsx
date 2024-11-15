@@ -1,9 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { getBouldersWithTicks } from "~/server/queries";
-import { Button } from "~/components/ui/button";
+import { Button, buttonVariants } from "~/components/ui/button";
 import { Badge } from "~/components/ui/badge";
 import { auth } from "@clerk/nextjs/server";
 import { cn } from "~/lib/utils";
+import { Link, LinkIcon } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -15,10 +16,12 @@ async function Boulders() {
   return (
     <div className="flex flex-wrap justify-center gap-4 px-4">
       {boulders.map((boulder) => {
+        const tick = boulder.ticks.find((tick) => tick.userId === userId);
         return (
           <BoulderCard
             key={boulder.id}
-            hasSent={boulder.ticks.some((tick) => tick.userId === userId)}
+            hasSent={tick !== undefined}
+            isClassic={Number(tick?.rating) > 3}
             {...boulder}
           />
         );
@@ -32,9 +35,16 @@ interface BoulderCardProps {
   grade: string;
   url: string;
   hasSent: boolean;
+  isClassic: boolean;
 }
 
-function BoulderCard({ name, grade, url, hasSent }: BoulderCardProps) {
+function BoulderCard({
+  name,
+  grade,
+  url,
+  hasSent,
+  isClassic,
+}: BoulderCardProps) {
   return (
     <Card
       className={cn(
@@ -43,29 +53,35 @@ function BoulderCard({ name, grade, url, hasSent }: BoulderCardProps) {
       )}
     >
       <CardHeader className="pb-2">
-        <div className="flex items-center justify-center gap-2">
+        <div className="flex items-center justify-between gap-2">
           <CardTitle title={name} className="truncate text-2xl font-bold">
             {name}
           </CardTitle>
-        </div>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-2">
-        <div className="flex justify-center gap-1">
-          <Badge variant="secondary" className="text-md font-semibold">
-            {grade}
-          </Badge>
-        </div>
-        <Button asChild className="w-full">
           <a
             href={url}
             target="_blank"
             rel="noreferrer"
-            className="text-blue-500 hover:underline"
+            className={cn(
+              buttonVariants({ variant: "outline", size: "icon" }),
+              "flex-shrink-0",
+            )}
           >
-            View Problem
+            <LinkIcon />
             <span className="sr-only">View details for {name}</span>
           </a>
-        </Button>
+        </div>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-2">
+        <div className="flex gap-1">
+          <Badge variant="secondary" className="text-md font-semibold">
+            {grade}
+          </Badge>
+          {isClassic && (
+            <Badge variant="outline" className="text-md font-semibold">
+              🌟
+            </Badge>
+          )}
+        </div>
       </CardContent>
     </Card>
   );
