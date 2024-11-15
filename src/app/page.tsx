@@ -1,6 +1,6 @@
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { getBoulders } from "~/server/queries";
+import { getBouldersWithTicks } from "~/server/queries";
 import { Button } from "~/components/ui/button";
 import { Badge } from "~/components/ui/badge";
 import { auth } from "@clerk/nextjs/server";
@@ -9,7 +9,7 @@ import { cn } from "~/lib/utils";
 export const dynamic = "force-dynamic";
 
 async function Boulders() {
-  const boulders = await getBoulders();
+  const boulders = await getBouldersWithTicks();
 
   const userId = (await auth()).userId;
 

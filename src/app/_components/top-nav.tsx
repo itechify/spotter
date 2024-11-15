@@ -1,10 +1,7 @@
-"use client";
-
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { buttonVariants } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
-import { UploadButton } from "~/utils/uploadthing";
 
 export function TopNav() {
   return (
@@ -24,19 +21,6 @@ export function TopNav() {
         </SignedOut>
         <SignedIn>
           <div className="flex gap-4">
-            <UploadButton
-              endpoint="csvUploader"
-              className="pr-2"
-              onClientUploadComplete={(res) => {
-                // Do something with the response
-                console.log("Files: ", res);
-                alert("Upload Completed");
-              }}
-              onUploadError={(error: Error) => {
-                // Do something with the error.
-                alert(`ERROR! ${error.message}`);
-              }}
-            />
             <UserButton />
           </div>
         </SignedIn>

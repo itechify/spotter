@@ -2,11 +2,16 @@ import "server-only";
 import { db } from "./db";
 import { auth } from "@clerk/nextjs/server";
 
+export async function getBouldersWithTicks() {
+  const boulders = await db.query.boulders.findMany({
+    with: { ticks: true },
+    orderBy: (boulder, { desc }) => desc(boulder.grade),
+  });
+  return boulders;
+}
+
 export async function getBoulders() {
   const boulders = await db.query.boulders.findMany({
-    with: {
-      ticks: true,
-    },
     orderBy: (boulder, { desc }) => desc(boulder.grade),
   });
   return boulders;
