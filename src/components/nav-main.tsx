@@ -54,10 +54,6 @@ export function NavMain({
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton
                   tooltip={item.title}
-                  isActive={
-                    pathname === item.url ||
-                    item.items?.some((subItem) => pathname === subItem.url)
-                  }
                   onClick={!open ? () => router.push(item.url) : undefined}
                 >
                   {item.icon && <item.icon />}

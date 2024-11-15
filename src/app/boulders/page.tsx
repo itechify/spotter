@@ -1,10 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { getBouldersWithTicks } from "~/server/queries";
-import { Button, buttonVariants } from "~/components/ui/button";
 import { Badge } from "~/components/ui/badge";
 import { auth } from "@clerk/nextjs/server";
 import { cn } from "~/lib/utils";
-import { Link, LinkIcon } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -52,42 +50,39 @@ function BoulderCard({
         hasSent && "border-green-600 bg-primary-foreground",
       )}
     >
-      <CardHeader className="pb-2">
+      <CardHeader className="pb-0">
         <div className="flex items-center justify-between gap-2">
-          <CardTitle title={name} className="truncate text-2xl font-bold">
-            {name}
+          <CardTitle title={name} className="truncate text-xl font-bold">
+            <a
+              href={url}
+              target="_blank"
+              rel="noreferrer"
+              className="text-primary underline-offset-4 hover:underline"
+            >
+              {name}
+            </a>
           </CardTitle>
-          <a
-            href={url}
-            target="_blank"
-            rel="noreferrer"
-            className={cn(
-              buttonVariants({ variant: "outline", size: "icon" }),
-              "flex-shrink-0",
+          <div className="flex gap-1">
+            {isClassic && (
+              <div className="flex items-center justify-center text-lg font-semibold">
+                🌟
+              </div>
             )}
-          >
-            <LinkIcon />
-            <span className="sr-only">View details for {name}</span>
-          </a>
+            <Badge
+              variant="secondary"
+              className="text-nowrap text-sm font-semibold"
+            >
+              {grade}
+            </Badge>
+          </div>
         </div>
       </CardHeader>
-      <CardContent className="flex flex-col gap-2">
-        <div className="flex gap-1">
-          <Badge variant="secondary" className="text-md font-semibold">
-            {grade}
-          </Badge>
-          {isClassic && (
-            <Badge variant="outline" className="text-md font-semibold">
-              🌟
-            </Badge>
-          )}
-        </div>
-      </CardContent>
+      <CardContent className="flex flex-col gap-2"></CardContent>
     </Card>
   );
 }
 
-export default async function HomePage() {
+export default async function BouldersPage() {
   return (
     <main className="">
       <Boulders />
