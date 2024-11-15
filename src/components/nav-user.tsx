@@ -32,12 +32,15 @@ export function NavUser() {
           </SignInButton>
         </SignedOut>
         <SignedIn>
-          <div className="flex gap-2 pb-2">
+          <div className="flex pb-2">
             <UserButton />
             {open && (
-              <span className="w-full text-center font-medium">
-                {user?.primaryEmailAddress?.emailAddress}
-              </span>
+              <div className="flex w-full flex-col text-center">
+                <div className="font-medium">{user?.username}</div>
+                <div className="text-sm text-muted-foreground">
+                  {user?.primaryEmailAddress?.emailAddress}
+                </div>
+              </div>
             )}
           </div>
         </SignedIn>
