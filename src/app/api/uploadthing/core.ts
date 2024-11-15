@@ -4,7 +4,6 @@ import { UploadThingError } from "uploadthing/server";
 import { db } from "~/server/db";
 import Papa from "papaparse";
 import { boulders, ticks } from "~/server/db/schema";
-import { sql } from "drizzle-orm";
 
 const f = createUploadthing();
 
@@ -52,6 +51,15 @@ export const ourFileRouter = {
         dynamicTyping: true,
       });
 
+      const existingBoulders = await db.query.boulders.findMany({
+        orderBy: (boulder, { desc }) => desc(boulder.grade),
+      });
+
+      // Fetch all existing ticks for the current user
+      const existingTicks = await db.query.ticks.findMany({
+        where: (tick, { eq }) => eq(tick.userId, metadata.userId),
+      });
+
       const tickEntries = [];
 
       for (const entry of parsedData.data) {
@@ -59,13 +67,7 @@ export const ourFileRouter = {
           entry["Route Type"]?.includes("Boulder") &&
           ["Send", "Flash"].includes(entry.Style)
         ) {
-          // Check if the boulder already exists in the database
-          let boulder = await db
-            .select()
-            .from(boulders)
-            .where(sql`${boulders.url} = ${entry.URL}`)
-            .limit(1)
-            .then((rows) => rows[0]);
+          let boulder = existingBoulders.find((eb) => eb.url === entry.URL);
 
           // If boulder doesn't exist, insert it and retrieve the ID
           if (!boulder) {
@@ -79,21 +81,35 @@ export const ourFileRouter = {
               .returning();
 
             boulder = result[0];
+            if (boulder) {
+              existingBoulders.push(boulder);
+            }
           }
 
           if (boulder) {
-            // Use the boulder's id for the tick entry
-            tickEntries.push({
-              boulderId: boulder.id,
-              userId: metadata.userId,
-              rating: String(entry["Your Stars"]),
-              date: entry.Date,
-            });
+            // Only add the tick entry if it doesn't already exist
+            if (
+              !existingTicks.find(
+                (tick) =>
+                  tick.date === entry.Date &&
+                  tick.userId === metadata.userId &&
+                  tick.boulderId === boulder.id,
+              )
+            ) {
+              tickEntries.push({
+                boulderId: boulder.id,
+                userId: metadata.userId,
+                rating: String(entry["Your Stars"]),
+                date: entry.Date,
+              });
+            }
           }
         }
       }
 
-      await db.insert(ticks).values(tickEntries);
+      if (tickEntries.length > 0) {
+        await db.insert(ticks).values(tickEntries);
+      }
 
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       return { uploadedBy: metadata.userId };

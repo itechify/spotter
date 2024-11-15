@@ -1,12 +1,5 @@
 import { SignedIn, SignedOut } from "@clerk/nextjs";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
-import { MountainIcon } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { getBoulders } from "~/server/queries";
 import { Button } from "~/components/ui/button";
 import { Badge } from "~/components/ui/badge";
@@ -43,21 +36,18 @@ interface BoulderCardProps {
 function BoulderCard({ name, grade, url, hasSent }: BoulderCardProps) {
   return (
     <Card className={cn("w-full max-w-sm")}>
-      <CardHeader className="pb-4">
-        <div className="flex items-center justify-between gap-2">
+      <CardHeader className="pb-2">
+        <div className="flex items-center justify-center gap-2">
           <CardTitle title={name} className="truncate text-2xl font-bold">
             {name}
           </CardTitle>
-          <Badge variant="secondary" className="text-md font-semibold">
-            {grade}
-          </Badge>
         </div>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
-        <div className="bg-muted flex items-center justify-center rounded-md p-6">
-          <MountainIcon className="text-primary h-24 w-24" />
-        </div>
-        <div className="flex gap-4">
+        <div className="flex justify-center gap-1">
+          <Badge variant="secondary" className="text-md font-semibold">
+            {grade}
+          </Badge>
           {hasSent && <Badge className="bg-lime-400 text-sm">Sent</Badge>}
         </div>
         <Button asChild className="w-full">

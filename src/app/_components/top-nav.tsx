@@ -27,12 +27,6 @@ export function TopNav() {
             <UploadButton
               endpoint="csvUploader"
               className="pr-2"
-              content={{
-                button({ ready }) {
-                  if (ready) return <div>Upload Ticks</div>;
-                  return "Loading...";
-                },
-              }}
               onClientUploadComplete={(res) => {
                 // Do something with the response
                 console.log("Files: ", res);
