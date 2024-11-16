@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { MountainIcon, MountainSnowIcon } from "lucide-react";
 import { SignedIn, SignedOut, SignIn } from "@clerk/nextjs";
+import TotalBouldersCard from "./_components/total-boulders-card";
 
 export const dynamic = "force-dynamic";
 
@@ -35,29 +36,16 @@ export default function DashboardPage() {
             </TabsList>
             <TabsContent value="overview" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Boulder
-                    </CardTitle>
-                    <MountainIcon className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">404 sends</div>
-                    <p className="text-xs text-muted-foreground">
-                      xxx were flashes
-                    </p>
-                  </CardContent>
-                </Card>
+                <TotalBouldersCard />
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Sport</CardTitle>
                     <MountainSnowIcon className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">69 sends</div>
-                    <p className="text-xs text-muted-foreground">
-                      xxx were flashes
+                    <div className="text-2xl font-bold">Todo</div>
+                    <p className="text-sm text-muted-foreground">
+                      coming soon...
                     </p>
                   </CardContent>
                 </Card>

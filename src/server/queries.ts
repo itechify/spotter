@@ -9,8 +9,7 @@ export async function getBouldersWithMyTicks() {
   const boulders = await db.query.boulders.findMany({
     with: {
       ticks: {
-        where: (tick, { eq }) =>
-          eq(tick.userId, userId ?? "non-existent-user-id"),
+        where: (tick, { eq }) => eq(tick.userId, userId ?? ""),
         orderBy: (tick, { asc }) => asc(tick.date),
       },
     },

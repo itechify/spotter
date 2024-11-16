@@ -22,7 +22,7 @@ export function BoulderCard({
       className={cn(
         "w-full max-w-sm border-2",
         sendStatus !== "unsent" && "bg-primary-foreground",
-        sendStatus === "flash" && "border-amber-300",
+        sendStatus === "flash" && "border-amber-500 dark:border-amber-300",
         sendStatus === "sent" && "border-green-600",
       )}
     >
