@@ -6,12 +6,11 @@ export async function getBouldersWithMyTicks() {
   const user = auth();
   const userId = (await user).userId;
 
-  if (!userId) throw new Error("Unauthorized");
-
   const boulders = await db.query.boulders.findMany({
     with: {
       ticks: {
-        where: (tick, { eq }) => eq(tick.userId, userId),
+        where: (tick, { eq }) =>
+          eq(tick.userId, userId ?? "non-existent-user-id"),
         orderBy: (tick, { asc }) => asc(tick.date),
       },
     },
