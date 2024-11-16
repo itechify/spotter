@@ -18,6 +18,7 @@ import { ThemeProvider } from "~/components/theme-provider";
 import { ModeToggle } from "~/components/mode-toggle";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { Toaster } from "~/components/ui/sonner";
+import { CSPostHogProvider } from "./_analytics/provider";
 
 export const metadata: Metadata = {
   title: "Spotter",
@@ -29,49 +30,54 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <ClerkProvider>
-      <html
-        lang="en"
-        className={`${GeistSans.variable}`}
-        suppressHydrationWarning
-      >
-        <body>
-          <NextSSRPlugin
-            /**
-             * The `extractRouterConfig` will extract **only** the route configs
-             * from the router to prevent additional information from being
-             * leaked to the client. The data passed to the client is the same
-             * as if you were to fetch `/api/uploadthing` directly.
-             */
-            routerConfig={extractRouterConfig(ourFileRouter)}
-          />
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <SidebarProvider>
-              <AppSidebar />
-              <SidebarInset>
-                <div className="grid h-screen grid-rows-[auto,1fr]">
-                  <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-                    <div className="flex w-full items-center gap-2 px-4">
-                      <SidebarTrigger className="-ml-1" />
-                      <Separator orientation="vertical" className="mr-2 h-4" />
-                      <div className="flex w-full items-center justify-end">
-                        <ModeToggle />
+    <ClerkProvider dynamic>
+      <CSPostHogProvider>
+        <html
+          lang="en"
+          className={`${GeistSans.variable}`}
+          suppressHydrationWarning
+        >
+          <body>
+            <NextSSRPlugin
+              /**
+               * The `extractRouterConfig` will extract **only** the route configs
+               * from the router to prevent additional information from being
+               * leaked to the client. The data passed to the client is the same
+               * as if you were to fetch `/api/uploadthing` directly.
+               */
+              routerConfig={extractRouterConfig(ourFileRouter)}
+            />
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <SidebarProvider>
+                <AppSidebar />
+                <SidebarInset>
+                  <div className="grid h-screen grid-rows-[auto,1fr]">
+                    <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+                      <div className="flex w-full items-center gap-2 px-4">
+                        <SidebarTrigger className="-ml-1" />
+                        <Separator
+                          orientation="vertical"
+                          className="mr-2 h-4"
+                        />
+                        <div className="flex w-full items-center justify-end">
+                          <ModeToggle />
+                        </div>
                       </div>
-                    </div>
-                  </header>
-                  <ScrollArea>{children}</ScrollArea>
-                </div>
-              </SidebarInset>
-              <Toaster />
-            </SidebarProvider>
-          </ThemeProvider>
-        </body>
-      </html>
+                    </header>
+                    <ScrollArea>{children}</ScrollArea>
+                  </div>
+                </SidebarInset>
+                <Toaster />
+              </SidebarProvider>
+            </ThemeProvider>
+          </body>
+        </html>
+      </CSPostHogProvider>
     </ClerkProvider>
   );
 }
