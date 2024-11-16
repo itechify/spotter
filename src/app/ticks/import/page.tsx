@@ -10,7 +10,7 @@ export default function ImportPage() {
   const router = useRouter();
 
   return (
-    <main className="">
+    <>
       <SignedOut>
         <div className="flex h-96 w-full items-center justify-center text-2xl">
           Sign in to import your ticks!
@@ -42,6 +42,6 @@ export default function ImportPage() {
           />
         </div>
       </SignedIn>
-    </main>
+    </>
   );
 }

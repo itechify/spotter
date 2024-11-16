@@ -84,8 +84,8 @@ function BoulderCard({
 
 export default async function BouldersPage() {
   return (
-    <main className="">
+    <div className="p-4">
       <Boulders />
-    </main>
+    </div>
   );
 }
