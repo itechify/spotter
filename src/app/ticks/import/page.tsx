@@ -3,6 +3,7 @@
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { LoadingSpinner } from "~/components/ui/loading-spinner";
 import { UploadDropzone } from "~/utils/uploadthing";
 
 export const dynamic = "force-dynamic";
@@ -33,10 +34,16 @@ export default function ImportPage() {
           <UploadDropzone
             endpoint={"csvUploader"}
             onUploadBegin={() => {
-              toast("Uploading...", {
-                duration: 100000,
-                id: "upload-begin",
-              });
+              toast(
+                <div className="flex items-center gap-2">
+                  <LoadingSpinner className="h-4 w-4" />
+                  <span>Uploading...</span>
+                </div>,
+                {
+                  duration: 100000,
+                  id: "upload-begin",
+                },
+              );
             }}
             onClientUploadComplete={() => {
               toast.dismiss("upload-begin");
