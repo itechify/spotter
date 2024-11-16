@@ -15,6 +15,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "~/components/ui/sidebar";
+import { cn } from "~/lib/utils";
 
 export function NavUser() {
   const { open } = useSidebar();
@@ -32,10 +33,10 @@ export function NavUser() {
           </SignInButton>
         </SignedOut>
         <SignedIn>
-          <div className="flex pb-2">
+          <div className={cn("flex gap-4 pb-2", open && "pl-2")}>
             <UserButton />
             {open && (
-              <div className="flex w-full flex-col text-center">
+              <div className="flex w-full flex-col">
                 <div className="font-medium">{user?.username}</div>
                 <div className="text-sm text-muted-foreground">
                   {user?.primaryEmailAddress?.emailAddress}

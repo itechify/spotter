@@ -41,7 +41,6 @@ export function NavMain({
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Apps</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible
@@ -55,6 +54,13 @@ export function NavMain({
                 <SidebarMenuButton
                   tooltip={item.title}
                   onClick={!open ? () => router.push(item.url) : undefined}
+                  isActive={
+                    (pathname === item.url ||
+                      item.items?.some(
+                        (subItem) => pathname === subItem.url,
+                      )) &&
+                    !open
+                  }
                 >
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
