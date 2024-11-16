@@ -34,7 +34,13 @@ export function NavUser() {
         </SignedOut>
         <SignedIn>
           <div className={cn("flex gap-4 pb-2", open && "pl-2")}>
-            <UserButton />
+            <UserButton
+              appearance={{
+                elements: {
+                  userButtonPopoverCard: { pointerEvents: "initial" },
+                },
+              }}
+            />
             {open && (
               <div className="flex w-full flex-col">
                 <div className="font-medium">{user?.username}</div>
