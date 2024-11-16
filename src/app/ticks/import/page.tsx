@@ -2,6 +2,7 @@
 
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { usePostHog } from "posthog-js/react";
 import { toast } from "sonner";
 import { LoadingSpinner } from "~/components/ui/loading-spinner";
 import { UploadDropzone } from "~/utils/uploadthing";
@@ -10,6 +11,8 @@ export const dynamic = "force-dynamic";
 
 export default function ImportPage() {
   const router = useRouter();
+
+  const posthog = usePostHog();
 
   return (
     <>
@@ -34,6 +37,7 @@ export default function ImportPage() {
           <UploadDropzone
             endpoint={"csvUploader"}
             onUploadBegin={() => {
+              posthog.capture("Tick CSV Upload Begin");
               toast(
                 <div className="flex items-center gap-2">
                   <LoadingSpinner className="h-4 w-4" />
