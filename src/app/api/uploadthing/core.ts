@@ -101,6 +101,7 @@ export const ourFileRouter = {
                 userId: metadata.userId,
                 rating: String(entry["Your Stars"]),
                 date: entry.Date,
+                flash: entry.Style === "Flash",
               });
             }
           }

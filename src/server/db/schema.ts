@@ -3,6 +3,7 @@
 
 import { relations, sql } from "drizzle-orm";
 import {
+  boolean,
   integer,
   numeric,
   pgTableCreator,
@@ -44,6 +45,7 @@ export const ticks = createTable("tick", {
   rating: numeric("rating"),
   date: varchar("date", { length: 256 }).notNull(),
   ranking: integer("ranking"),
+  flash: boolean("flash").default(false).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
