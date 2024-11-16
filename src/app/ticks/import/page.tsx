@@ -2,7 +2,7 @@
 
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { UploadButton } from "~/utils/uploadthing";
+import { UploadDropzone } from "~/utils/uploadthing";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +17,7 @@ export default function ImportPage() {
         </div>
       </SignedOut>
       <SignedIn>
-        <div className="flex h-96 w-full flex-col items-center justify-center gap-16">
+        <div className="flex h-96 w-full flex-col items-center justify-center gap-4">
           <div className="flex w-96 flex-col gap-2 text-center">
             <p>Import your ticks CSV from Mountain Project here!</p>
             <a
@@ -29,16 +29,12 @@ export default function ImportPage() {
               Example for where this can be found.
             </a>
           </div>
-          <UploadButton
-            endpoint="csvUploader"
-            className="pr-2"
+          <UploadDropzone
+            endpoint={"csvUploader"}
             onClientUploadComplete={() => {
               router.refresh();
             }}
-            onUploadError={(error: Error) => {
-              // Do something with the error.
-              alert(`ERROR! ${error.message}`);
-            }}
+            className="border-2 border-dashed border-primary/50"
           />
         </div>
       </SignedIn>
