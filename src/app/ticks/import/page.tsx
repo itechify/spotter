@@ -34,7 +34,10 @@ export default function ImportPage() {
             onClientUploadComplete={() => {
               router.refresh();
             }}
-            className="border-2 border-dashed border-primary/50"
+            className="border-primary/50"
+            config={{
+              mode: "auto",
+            }}
           />
         </div>
       </SignedIn>
