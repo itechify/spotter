@@ -17,6 +17,7 @@ import { Separator } from "~/components/ui/separator";
 import { ThemeProvider } from "~/components/theme-provider";
 import { ModeToggle } from "~/components/mode-toggle";
 import { ScrollArea } from "~/components/ui/scroll-area";
+import { Toaster } from "~/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Spotter",
@@ -66,6 +67,7 @@ export default function RootLayout({
                   <ScrollArea>{children}</ScrollArea>
                 </div>
               </SidebarInset>
+              <Toaster />
             </SidebarProvider>
           </ThemeProvider>
         </body>

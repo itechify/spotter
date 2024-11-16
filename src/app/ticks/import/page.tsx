@@ -2,6 +2,7 @@
 
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { UploadDropzone } from "~/utils/uploadthing";
 
 export const dynamic = "force-dynamic";
@@ -31,7 +32,15 @@ export default function ImportPage() {
           </div>
           <UploadDropzone
             endpoint={"csvUploader"}
+            onUploadBegin={() => {
+              toast("Uploading...", {
+                duration: 100000,
+                id: "upload-begin",
+              });
+            }}
             onClientUploadComplete={() => {
+              toast.dismiss("upload-begin");
+              toast("Ticks successfully uploaded!");
               router.refresh();
             }}
             className="border-primary/50"
