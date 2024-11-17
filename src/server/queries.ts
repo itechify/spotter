@@ -1,6 +1,9 @@
 import "server-only";
 import { db } from "./db";
 import { auth } from "@clerk/nextjs/server";
+import { sql } from "drizzle-orm";
+import { ticks } from "./db/schema";
+import { MonthlyTicksStats } from "~/app/_components/monthly-ticks-chart";
 
 export async function getBouldersWithMyTicks() {
   const user = auth();
@@ -36,4 +39,89 @@ export async function getMyTicks() {
     orderBy: (tick, { desc }) => desc(tick.date),
   });
   return ticks;
+}
+
+export async function getMyMonthlyTickStats() {
+  const user = auth();
+  const userId = (await user).userId;
+
+  if (!userId) throw new Error("Unauthorized");
+
+  const tickStats = await db
+    .select({
+      yearMonth:
+        sql<string>`TO_CHAR(TO_DATE(${ticks.date}, 'YYYY-MM-DD'), 'MON YY')`.as(
+          "year_month",
+        ),
+      tickCount: sql<number>`COUNT(*)::int`.as("tick_count"),
+      flashCount:
+        sql<number>`COUNT(CASE WHEN ${ticks.flash} THEN 1 END)::int`.as(
+          "flash_count",
+        ),
+    })
+    .from(ticks)
+    .where(sql`${ticks.userId} = ${userId}`)
+    .groupBy(
+      sql`TO_CHAR(TO_DATE(${ticks.date}, 'YYYY-MM-DD'), 'MON YY')`,
+      sql`EXTRACT(YEAR FROM TO_DATE(${ticks.date}, 'YYYY-MM-DD'))`,
+      sql`EXTRACT(MONTH FROM TO_DATE(${ticks.date}, 'YYYY-MM-DD'))`,
+    )
+    .orderBy(
+      sql`EXTRACT(YEAR FROM TO_DATE(${ticks.date}, 'YYYY-MM-DD'))`,
+      sql`EXTRACT(MONTH FROM TO_DATE(${ticks.date}, 'YYYY-MM-DD'))`,
+    );
+
+  return fillMissingMonths(tickStats);
+}
+
+// TODO: This seems like a hacky way to fill in missing months. There's probably a better way to do this.
+function fillMissingMonths(
+  tickStats: { yearMonth: string; tickCount: number; flashCount: number }[],
+) {
+  const months = [
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC",
+  ];
+
+  // Helper to calculate the next month-year string
+  function getNextMonthYear(currentYearMonth: string): string {
+    const [currentMonth, year] = currentYearMonth.split(" ");
+    const monthIndex = months.indexOf(currentMonth!);
+    const currentYear = parseInt(year!, 10);
+
+    const nextMonthIndex = (monthIndex + 1) % 12;
+    const nextYear = nextMonthIndex === 0 ? currentYear + 1 : currentYear;
+
+    return `${months[nextMonthIndex]} ${String(nextYear).padStart(2, "0")}`;
+  }
+
+  const filledStats = [];
+  for (let i = 0; i < tickStats.length; i++) {
+    const current = tickStats[i]!;
+    filledStats.push(current);
+
+    if (i < tickStats.length - 1) {
+      let expectedNext = getNextMonthYear(current.yearMonth);
+      while (expectedNext !== tickStats[i + 1]!.yearMonth) {
+        filledStats.push({
+          yearMonth: expectedNext,
+          tickCount: 0,
+          flashCount: 0,
+        });
+        expectedNext = getNextMonthYear(expectedNext);
+      }
+    }
+  }
+
+  return filledStats;
 }

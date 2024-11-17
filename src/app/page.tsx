@@ -2,9 +2,11 @@ import { type Metadata } from "next";
 
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { MountainIcon, MountainSnowIcon } from "lucide-react";
+import { MountainSnowIcon } from "lucide-react";
 import { SignedIn, SignedOut, SignIn } from "@clerk/nextjs";
 import TotalBouldersCard from "./_components/total-boulders-card";
+import { getMyMonthlyTickStats } from "~/server/queries";
+import { MonthlyTicksChart } from "./_components/monthly-ticks-chart";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +15,9 @@ export const metadata: Metadata = {
   description: "Example dashboard app built using the components.",
 };
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const monthlyTickStats = await getMyMonthlyTickStats();
+
   return (
     <>
       <SignedIn>
@@ -51,18 +55,9 @@ export default function DashboardPage() {
                 </Card>
               </div>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-8">
-                <Card className="col-span-4">
-                  <CardHeader>
-                    <CardTitle>Overview</CardTitle>
-                  </CardHeader>
-                  <CardContent className="h-96 text-center">Todo</CardContent>
-                </Card>
-                <Card className="col-span-4">
-                  <CardHeader>
-                    <CardTitle>Recent Sends</CardTitle>
-                  </CardHeader>
-                  <CardContent className="h-96 text-center">Todo</CardContent>
-                </Card>
+                <div className="col-span-4">
+                  <MonthlyTicksChart data={monthlyTickStats} />
+                </div>
               </div>
             </TabsContent>
           </Tabs>

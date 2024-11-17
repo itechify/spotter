@@ -14,7 +14,7 @@ export default async function TotalBouldersCard() {
         <MountainIcon className="h-4 w-4 text-muted-foreground" />
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{ticks.length} sends</div>
+        <div className="text-2xl font-bold">{ticks.length} ticks</div>
         <p className="text-sm text-muted-foreground">
           <span className="font-semibold">{flashCount}</span> were{" "}
           <span className="text-amber-500 dark:text-amber-300">flashes</span>
