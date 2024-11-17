@@ -22,8 +22,8 @@ import {
 import { Toggle } from "~/components/ui/toggle";
 
 const chartConfig = {
-  tickCount: {
-    label: "Ticks",
+  sendCount: {
+    label: "Sends",
     color: "#65a30d",
   },
   flashCount: {
@@ -34,7 +34,7 @@ const chartConfig = {
 
 export type MonthlyTicksStats = {
   yearMonth: string;
-  tickCount: number;
+  sendCount: number;
   flashCount: number;
 }[];
 
@@ -82,9 +82,9 @@ export function MonthlyTicksChart({ data }: MonthlyTicksChartProps) {
             <ChartTooltip content={<ChartTooltipContent />} />
             <ChartLegend content={<ChartLegendContent />} />
             <Bar
-              dataKey="tickCount"
+              dataKey="sendCount"
               stackId="a"
-              fill="var(--color-tickCount)"
+              fill="var(--color-sendCount)"
               radius={[0, 0, 4, 4]}
             />
             <Bar

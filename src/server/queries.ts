@@ -47,36 +47,44 @@ export async function getMyMonthlyTickStats() {
 
   if (!userId) throw new Error("Unauthorized");
 
-  const tickStats = await db
-    .select({
-      yearMonth:
-        sql<string>`TO_CHAR(TO_DATE(${ticks.date}, 'YYYY-MM-DD'), 'MON YY')`.as(
-          "year_month",
-        ),
-      tickCount: sql<number>`COUNT(*)::int`.as("tick_count"),
-      flashCount:
-        sql<number>`COUNT(CASE WHEN ${ticks.flash} THEN 1 END)::int`.as(
-          "flash_count",
-        ),
-    })
-    .from(ticks)
-    .where(sql`${ticks.userId} = ${userId}`)
-    .groupBy(
-      sql`TO_CHAR(TO_DATE(${ticks.date}, 'YYYY-MM-DD'), 'MON YY')`,
-      sql`EXTRACT(YEAR FROM TO_DATE(${ticks.date}, 'YYYY-MM-DD'))`,
-      sql`EXTRACT(MONTH FROM TO_DATE(${ticks.date}, 'YYYY-MM-DD'))`,
-    )
-    .orderBy(
-      sql`EXTRACT(YEAR FROM TO_DATE(${ticks.date}, 'YYYY-MM-DD'))`,
-      sql`EXTRACT(MONTH FROM TO_DATE(${ticks.date}, 'YYYY-MM-DD'))`,
-    );
+  const tickStats = (
+    await db
+      .select({
+        yearMonth:
+          sql<string>`TO_CHAR(TO_DATE(${ticks.date}, 'YYYY-MM-DD'), 'MON YY')`.as(
+            "year_month",
+          ),
+        tickCount: sql<number>`COUNT(*)::int`.as("tick_count"),
+        flashCount:
+          sql<number>`COUNT(CASE WHEN ${ticks.flash} THEN 1 END)::int`.as(
+            "flash_count",
+          ),
+      })
+      .from(ticks)
+      .where(sql`${ticks.userId} = ${userId}`)
+      .groupBy(
+        sql`TO_CHAR(TO_DATE(${ticks.date}, 'YYYY-MM-DD'), 'MON YY')`,
+        sql`EXTRACT(YEAR FROM TO_DATE(${ticks.date}, 'YYYY-MM-DD'))`,
+        sql`EXTRACT(MONTH FROM TO_DATE(${ticks.date}, 'YYYY-MM-DD'))`,
+      )
+      .orderBy(
+        sql`EXTRACT(YEAR FROM TO_DATE(${ticks.date}, 'YYYY-MM-DD'))`,
+        sql`EXTRACT(MONTH FROM TO_DATE(${ticks.date}, 'YYYY-MM-DD'))`,
+      )
+  ).map((tick) => {
+    return {
+      yearMonth: tick.yearMonth,
+      sendCount: tick.tickCount - tick.flashCount,
+      flashCount: tick.flashCount,
+    };
+  });
 
   return fillMissingMonths(tickStats);
 }
 
 // TODO: This seems like a hacky way to fill in missing months. There's probably a better way to do this.
 function fillMissingMonths(
-  tickStats: { yearMonth: string; tickCount: number; flashCount: number }[],
+  tickStats: { yearMonth: string; sendCount: number; flashCount: number }[],
 ) {
   const months = [
     "JAN",
@@ -115,7 +123,7 @@ function fillMissingMonths(
       while (expectedNext !== tickStats[i + 1]!.yearMonth) {
         filledStats.push({
           yearMonth: expectedNext,
-          tickCount: 0,
+          sendCount: 0,
           flashCount: 0,
         });
         expectedNext = getNextMonthYear(expectedNext);
