@@ -43,9 +43,9 @@ type MonthlyTicksChartProps = {
 };
 
 export function MonthlyTicksChart({ data }: MonthlyTicksChartProps) {
-  const [onlyThisYear, setOnlyThisYear] = useState(false);
+  const [includeAllYears, setIncludeAllYears] = useState(false);
 
-  if (onlyThisYear) {
+  if (!includeAllYears) {
     data = data.filter((tick) =>
       tick.yearMonth.includes(String(new Date().getFullYear()).substring(2)),
     );
@@ -54,19 +54,20 @@ export function MonthlyTicksChart({ data }: MonthlyTicksChartProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Monthly Boulder Ticks</CardTitle>
+        <CardTitle>Monthly Boulders</CardTitle>
         <CardDescription>
-          Your monthly sends and flashes over the years.
+          Your monthly send and flash count{" "}
+          {includeAllYears ? "through the years" : "for this year"}.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex w-full justify-end">
           <Toggle
-            aria-label="Toggle this years ticks"
-            onPressedChange={setOnlyThisYear}
+            aria-label="Toggle all years ticks"
+            onPressedChange={setIncludeAllYears}
           >
-            {onlyThisYear ? <SquareCheckIcon /> : <Square />}
-            This Year
+            {includeAllYears ? <SquareCheckIcon /> : <Square />}
+            All Years
           </Toggle>
         </div>
         <ChartContainer config={chartConfig}>

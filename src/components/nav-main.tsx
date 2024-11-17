@@ -27,7 +27,6 @@ export function NavMain({
     title: string;
     url: string;
     icon?: LucideIcon;
-    isActive?: boolean;
     items?: {
       title: string;
       url: string;
@@ -41,50 +40,67 @@ export function NavMain({
   return (
     <SidebarGroup>
       <SidebarMenu>
-        {items.map((item) => (
-          <Collapsible
-            key={item.title}
-            asChild
-            defaultOpen={item.isActive}
-            className="group/collapsible"
-          >
-            <SidebarMenuItem>
-              <CollapsibleTrigger asChild>
-                <SidebarMenuButton
-                  tooltip={item.title}
-                  onClick={!open ? () => router.push(item.url) : undefined}
-                  isActive={
-                    (pathname === item.url ||
-                      item.items?.some(
-                        (subItem) => pathname === subItem.url,
-                      )) &&
-                    !open
-                  }
-                >
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
-                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                </SidebarMenuButton>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <SidebarMenuSub>
-                  {item.items?.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton
-                        isActive={pathname === subItem.url}
-                        asChild
-                      >
-                        <Link href={subItem.url}>
-                          <span>{subItem.title}</span>
-                        </Link>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                  ))}
-                </SidebarMenuSub>
-              </CollapsibleContent>
+        {items.map((item) => {
+          if (item.items) {
+            return (
+              <Collapsible
+                key={item.title}
+                asChild
+                defaultOpen={true}
+                className="group/collapsible"
+              >
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton
+                      tooltip={item.title}
+                      onClick={!open ? () => router.push(item.url) : undefined}
+                      isActive={
+                        (pathname === item.url ||
+                          item.items?.some(
+                            (subItem) => pathname === subItem.url,
+                          )) &&
+                        !open
+                      }
+                    >
+                      {item.icon && <item.icon />}
+                      <span>{item.title}</span>
+                      <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {item.items?.map((subItem) => (
+                        <SidebarMenuSubItem key={subItem.title}>
+                          <SidebarMenuSubButton
+                            isActive={pathname === subItem.url}
+                            asChild
+                          >
+                            <Link href={subItem.url}>
+                              <span>{subItem.title}</span>
+                            </Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
+            );
+          }
+
+          return (
+            <SidebarMenuItem key={item.title}>
+              <SidebarMenuButton
+                tooltip={item.title}
+                onClick={() => router.push(item.url)}
+                isActive={pathname === item.url}
+              >
+                {item.icon && <item.icon />}
+                <span>{item.title}</span>
+              </SidebarMenuButton>
             </SidebarMenuItem>
-          </Collapsible>
-        ))}
+          );
+        })}
       </SidebarMenu>
     </SidebarGroup>
   );

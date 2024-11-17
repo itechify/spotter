@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { BookOpenCheckIcon, MountainIcon } from "lucide-react";
+import { BookOpenCheckIcon, HomeIcon, MountainIcon } from "lucide-react";
 
 import { NavMain } from "~/components/nav-main";
 import { NavUser } from "~/components/nav-user";
@@ -23,10 +23,14 @@ import { cn } from "~/lib/utils";
 const data = {
   navMain: [
     {
+      title: "Home",
+      url: "/",
+      icon: HomeIcon,
+    },
+    {
       title: "Boulders",
       url: "/boulders",
       icon: MountainIcon,
-      isActive: true,
       items: [
         {
           title: "All",
@@ -38,7 +42,6 @@ const data = {
       title: "Ticks",
       url: "/ticks",
       icon: BookOpenCheckIcon,
-      isActive: true,
       items: [
         {
           title: "My Ticks",

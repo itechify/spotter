@@ -15,9 +15,13 @@ export const metadata: Metadata = {
   description: "Example dashboard app built using the components.",
 };
 
-export default async function DashboardPage() {
+// TODO: this seems hacky, but it works for now
+async function MonthlyTicksChartWrapper() {
   const monthlyTickStats = await getMyMonthlyTickStats();
+  return <MonthlyTicksChart data={monthlyTickStats} />;
+}
 
+export default async function DashboardPage() {
   return (
     <>
       <SignedIn>
@@ -56,7 +60,7 @@ export default async function DashboardPage() {
               </div>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-8">
                 <div className="col-span-4">
-                  <MonthlyTicksChart data={monthlyTickStats} />
+                  <MonthlyTicksChartWrapper />
                 </div>
               </div>
             </TabsContent>
