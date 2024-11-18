@@ -35,9 +35,13 @@ export async function getMyTicks() {
   if (!userId) throw new Error("Unauthorized");
 
   const ticks = await db.query.ticks.findMany({
+    with: {
+      boulder: true,
+    },
     where: (tick, { eq }) => eq(tick.userId, userId),
     orderBy: (tick, { desc }) => desc(tick.date),
   });
+
   return ticks;
 }
 
