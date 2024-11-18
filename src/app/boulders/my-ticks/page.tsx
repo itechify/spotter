@@ -3,7 +3,7 @@ import { TickCard } from "./_components/tick-card";
 
 export const dynamic = "force-dynamic";
 
-export default async function TicksPage() {
+export default async function MyBoulderTicksPage() {
   const ticks = await getMyTicks();
 
   return (

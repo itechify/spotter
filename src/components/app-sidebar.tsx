@@ -1,7 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { BookOpenCheckIcon, HomeIcon, MountainIcon } from "lucide-react";
+import {
+  BookOpenCheckIcon,
+  HomeIcon,
+  ImportIcon,
+  MountainIcon,
+} from "lucide-react";
 
 import { NavMain } from "~/components/nav-main";
 import { NavUser } from "~/components/nav-user";
@@ -28,28 +33,22 @@ const data = {
       icon: HomeIcon,
     },
     {
-      title: "Boulders",
+      title: "Import",
+      url: "/import",
+      icon: ImportIcon,
+    },
+    {
+      title: "Bouldering",
       url: "/boulders",
       icon: MountainIcon,
       items: [
         {
-          title: "All",
+          title: "All Boulders",
           url: "/boulders",
         },
-      ],
-    },
-    {
-      title: "Ticks",
-      url: "/ticks",
-      icon: BookOpenCheckIcon,
-      items: [
         {
           title: "My Ticks",
-          url: "/ticks",
-        },
-        {
-          title: "Import CSV",
-          url: "/ticks/import",
+          url: "/boulders/my-ticks",
         },
       ],
     },
