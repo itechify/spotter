@@ -7,6 +7,7 @@ import { SignedIn, SignedOut, SignIn } from "@clerk/nextjs";
 import TotalBouldersCard from "./_components/total-boulders-card";
 import { getMyMonthlyTickStats } from "~/server/queries";
 import { MonthlyTicksChart } from "./_components/monthly-ticks-chart";
+import HighestBoulderGradeCard from "./_components/highest-boulder-grade-card";
 
 export const dynamic = "force-dynamic";
 
@@ -45,18 +46,7 @@ export default async function DashboardPage() {
             <TabsContent value="overview" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <TotalBouldersCard />
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Sport</CardTitle>
-                    <MountainSnowIcon className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">Todo</div>
-                    <p className="text-sm text-muted-foreground">
-                      coming soon...
-                    </p>
-                  </CardContent>
-                </Card>
+                <HighestBoulderGradeCard />
               </div>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-8">
                 <div className="col-span-4">

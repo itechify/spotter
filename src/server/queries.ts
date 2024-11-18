@@ -1,8 +1,8 @@
 import "server-only";
 import { db } from "./db";
 import { auth } from "@clerk/nextjs/server";
-import { sql } from "drizzle-orm";
-import { ticks } from "./db/schema";
+import { desc, eq, sql } from "drizzle-orm";
+import { boulders, ticks } from "./db/schema";
 
 export async function getBouldersWithMyTicks() {
   const user = auth();
@@ -25,6 +25,29 @@ export async function getBoulders() {
     orderBy: (boulder, { desc }) => desc(boulder.grade),
   });
   return boulders;
+}
+
+export async function getMyHighestSentBoulderTick() {
+  const user = auth();
+  const userId = (await user).userId;
+
+  if (!userId) throw new Error("Unauthorized");
+
+  // Join ticks and boulders tables and order by the boulder grade
+  const highestSentBoulderTick = await db
+    .select()
+    .from(ticks)
+    .innerJoin(boulders, eq(ticks.boulderId, boulders.id))
+    .where(eq(ticks.userId, userId))
+    .orderBy(desc(boulders.grade)) // Order by boulder grade
+    .limit(1); // Get the highest-rated tick
+
+  if (!highestSentBoulderTick[0]) return null;
+
+  return {
+    ...highestSentBoulderTick[0].tick,
+    boulder: highestSentBoulderTick[0].boulder,
+  };
 }
 
 export async function getMyTicks() {
