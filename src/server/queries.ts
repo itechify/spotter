@@ -3,7 +3,6 @@ import { db } from "./db";
 import { auth } from "@clerk/nextjs/server";
 import { sql } from "drizzle-orm";
 import { ticks } from "./db/schema";
-import { MonthlyTicksStats } from "~/app/_components/monthly-ticks-chart";
 
 export async function getBouldersWithMyTicks() {
   const user = auth();

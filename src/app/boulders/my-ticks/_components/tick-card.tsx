@@ -1,4 +1,4 @@
-import { Star, Zap } from "lucide-react";
+import { Repeat, Star, Zap } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { cn } from "~/lib/utils";
@@ -10,7 +10,10 @@ interface TickCardProps {
   rating: string;
   date: string;
   flash: boolean;
+  repeat: boolean;
 }
+
+const ratingLabels = ["Ok", "Good", "Great", "Classic"];
 
 export function TickCard({
   boulderName,
@@ -19,6 +22,7 @@ export function TickCard({
   rating,
   date,
   flash,
+  repeat,
 }: TickCardProps) {
   return (
     <Card className={cn("w-full max-w-sm border-2")}>
@@ -35,10 +39,16 @@ export function TickCard({
             </a>
           </CardTitle>
           <div className="flex gap-1">
+            {repeat && (
+              <Repeat
+                className="h-6 w-6 fill-current text-lime-500"
+                aria-label="Repeat"
+              />
+            )}
             {flash && (
               <Zap
                 className="h-6 w-6 fill-current text-yellow-500"
-                aria-label="Flash attempt"
+                aria-label="Flash"
               />
             )}
             <Badge
@@ -50,26 +60,31 @@ export function TickCard({
           </div>
         </div>
       </CardHeader>
-      <CardContent className="flex flex-col gap-2">
-        <div className="flex gap-1">
-          {Array.from({ length: 4 }).map((_, index) => (
-            <Star
-              key={index}
-              className={`h-5 w-5 ${
-                String(index) < rating
-                  ? "fill-current text-yellow-500"
-                  : "text-gray-300"
-              }`}
-            />
-          ))}
+      <CardContent className="flex justify-between gap-2">
+        <div className="flex w-fit flex-col gap-1">
+          <div className="flex w-fit gap-1">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <Star
+                key={index}
+                className={`h-5 w-5 ${
+                  String(index) < rating
+                    ? "fill-current text-yellow-500"
+                    : "text-gray-300"
+                }`}
+              />
+            ))}
+          </div>
+          <div className="flex justify-center text-sm font-medium">
+            {ratingLabels[parseInt(rating, 10) - 1] ?? "Unrated"}
+          </div>
         </div>
-        <div className="text-sm text-muted-foreground">
+        <span className="flex items-end text-sm font-medium text-muted-foreground">
           {new Date(date).toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
             day: "numeric",
           })}
-        </div>
+        </span>
       </CardContent>
     </Card>
   );

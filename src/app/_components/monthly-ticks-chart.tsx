@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import {
-  ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -78,7 +78,7 @@ export function MonthlyTicksChart({ data }: MonthlyTicksChartProps) {
               tickLine={false}
               axisLine={false}
               interval={"equidistantPreserveStart"}
-              tickFormatter={(value) => value.split(" ")[0]}
+              tickFormatter={(value: string) => value.split(" ")[0]!}
             />
             <ChartTooltip content={<ChartTooltipContent />} />
             <ChartLegend content={<ChartLegendContent />} />

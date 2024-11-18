@@ -6,10 +6,29 @@ export const dynamic = "force-dynamic";
 export default async function MyBoulderTicksPage() {
   const ticks = await getMyTicks();
 
+  // Preprocess to determine if a tick is a repeat
+  const boulderFirstTicks = new Map<number, string>();
+
+  ticks.forEach((tick) => {
+    if (!boulderFirstTicks.has(tick.boulder.id)) {
+      boulderFirstTicks.set(tick.boulder.id, tick.date);
+    } else if (
+      new Date(tick.date) < new Date(boulderFirstTicks.get(tick.boulder.id)!)
+    ) {
+      boulderFirstTicks.set(tick.boulder.id, tick.date);
+    }
+  });
+
+  const ticksWithRepeatFlag = ticks.map((tick) => ({
+    ...tick,
+    repeat:
+      new Date(tick.date) > new Date(boulderFirstTicks.get(tick.boulder.id)!),
+  }));
+
   return (
     <div className="p-4">
       <div className="flex flex-wrap justify-center gap-4 px-4">
-        {ticks.map((tick) => {
+        {ticksWithRepeatFlag.map((tick) => {
           return (
             <TickCard
               key={tick.id}
@@ -19,6 +38,7 @@ export default async function MyBoulderTicksPage() {
               rating={tick.rating ?? "0"}
               date={tick.date}
               flash={tick.flash}
+              repeat={tick.repeat}
             />
           );
         })}{" "}

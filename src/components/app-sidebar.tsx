@@ -1,12 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  BookOpenCheckIcon,
-  HomeIcon,
-  ImportIcon,
-  MountainIcon,
-} from "lucide-react";
+import { HomeIcon, ImportIcon, MountainIcon } from "lucide-react";
 
 import { NavMain } from "~/components/nav-main";
 import { NavUser } from "~/components/nav-user";
