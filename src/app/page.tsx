@@ -1,19 +1,19 @@
 import { type Metadata } from "next";
 
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { MountainSnowIcon } from "lucide-react";
 import { SignedIn, SignedOut, SignIn } from "@clerk/nextjs";
 import TotalBouldersCard from "./_components/total-boulders-card";
 import { getMyMonthlyTickStats } from "~/server/queries";
 import { MonthlyTicksChart } from "./_components/monthly-ticks-chart";
-import HighestBoulderGradeCard from "./_components/highest-boulder-grade-card";
+import { HighestSendCard } from "./_components/highest-send-card";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { PickaxeIcon } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "Example dashboard app built using the components.",
+  title: "Spotter Dashboard",
+  description: "The main dashboard for the Spotter app.",
 };
 
 // TODO: this seems hacky, but it works for now
@@ -28,11 +28,11 @@ export default async function DashboardPage() {
       <SignedIn>
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="flex items-center justify-between space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight">Spotter</h2>
+            <h2 className="text-3xl font-bold tracking-tight">My Spotter</h2>
           </div>
-          <Tabs defaultValue="overview" className="space-y-4">
+          <Tabs defaultValue="bouldering" className="space-y-4">
             <TabsList>
-              <TabsTrigger value="overview">My Overview</TabsTrigger>
+              <TabsTrigger value="bouldering">Bouldering</TabsTrigger>
               <TabsTrigger value="todo1" disabled>
                 Todo 1
               </TabsTrigger>
@@ -43,14 +43,33 @@ export default async function DashboardPage() {
                 Todo 3
               </TabsTrigger>
             </TabsList>
-            <TabsContent value="overview" className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <TabsContent value="bouldering" className="space-y-4">
+              <div className="grid gap-4 xl:grid-cols-3">
                 <TotalBouldersCard />
-                <HighestBoulderGradeCard />
+                <HighestSendCard />
+                <Card className="flex flex-col">
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">
+                      Other Stat
+                    </CardTitle>
+                    <PickaxeIcon className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent className="flex h-full flex-col items-center justify-center gap-1 text-center">
+                    <div className="text-4xl font-bold">Todo</div>
+                  </CardContent>
+                </Card>
               </div>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-8">
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-8">
                 <div className="col-span-4">
                   <MonthlyTicksChartWrapper />
+                </div>
+                <div className="col-span-4">
+                  <Card className="h-full">
+                    <CardHeader>
+                      <CardTitle>Other Graph</CardTitle>
+                    </CardHeader>
+                    <CardContent>Todo</CardContent>
+                  </Card>
                 </div>
               </div>
             </TabsContent>

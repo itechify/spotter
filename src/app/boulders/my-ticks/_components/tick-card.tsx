@@ -1,4 +1,4 @@
-import { Repeat, Star, Zap } from "lucide-react";
+import { CalendarIcon, Repeat, Star, Zap } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { cn } from "~/lib/utils";
@@ -79,6 +79,7 @@ export function TickCard({
           </div>
         </div>
         <span className="flex items-end text-sm font-medium text-muted-foreground">
+          <CalendarIcon className="mr-1 h-5 w-5" />
           {new Date(date).toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
