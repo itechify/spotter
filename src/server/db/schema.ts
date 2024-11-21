@@ -46,6 +46,7 @@ export const ticks = createTable("tick", {
   date: varchar("date", { length: 256 }).notNull(),
   ranking: integer("ranking"),
   flash: boolean("flash").default(false).notNull(),
+  betaUrl: varchar("beta_url", { length: 1024 }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

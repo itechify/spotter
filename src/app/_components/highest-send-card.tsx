@@ -22,6 +22,7 @@ export async function HighestSendCard() {
             date={tick.date}
             boulderUrl={tick.boulder.url}
             repeat={false}
+            betaUrl={tick.betaUrl}
           />
         )}
       </CardContent>

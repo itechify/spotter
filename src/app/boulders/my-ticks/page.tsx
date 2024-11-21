@@ -35,13 +35,14 @@ export default async function MyBoulderTicksPage() {
               boulderName={tick.boulder.name}
               boulderGrade={tick.boulder.grade}
               boulderUrl={tick.boulder.url}
-              rating={tick.rating ?? "0"}
+              rating={tick.rating}
               date={tick.date}
               flash={tick.flash}
               repeat={tick.repeat}
+              betaUrl={tick.betaUrl}
             />
           );
-        })}{" "}
+        })}
       </div>
     </div>
   );
