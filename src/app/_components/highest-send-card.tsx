@@ -7,16 +7,16 @@ export async function HighestSendCard() {
   const tick = await getMyHighestSentBoulderTick();
 
   return (
-    <Card>
+    <Card className="flex flex-col">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
-        <CardTitle className="text-sm font-medium">Highest Send</CardTitle>
+        <CardTitle className="text-md font-medium">Highest Send</CardTitle>
         <AwardIcon className="h-4 w-4 text-muted-foreground" />
       </CardHeader>
-      <CardContent className="flex justify-center">
+      <CardContent className="flex h-full items-center justify-center">
         {tick && (
           <TickCard
             boulderName={tick.boulder.name}
-            rating={tick.rating ?? "0"}
+            rating={tick.rating}
             flash={tick.flash}
             boulderGrade={tick.boulder.grade}
             date={tick.date}

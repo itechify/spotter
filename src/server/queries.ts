@@ -159,3 +159,56 @@ function fillMissingMonths(
 
   return filledStats;
 }
+
+export async function getMyBouldersBreakdown() {
+  const user = auth();
+  const userId = (await user).userId;
+
+  if (!userId) throw new Error("Unauthorized");
+
+  const distinctTicks = await db
+    .selectDistinctOn([ticks.boulderId])
+    .from(ticks)
+    .leftJoin(boulders, eq(ticks.boulderId, boulders.id))
+    .where(eq(ticks.userId, userId));
+
+  // Define grade ranges
+  const gradeRanges: Record<string, string[]> = {
+    "VE-V0": ["V-easy", "V0"],
+    "V1-V2": ["V1", "V2"],
+    "V3-V4": ["V3", "V4"],
+    "V5-V6": ["V5", "V6"],
+    "V7-V8": ["V7", "V8"],
+    "V9+": ["V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16", "V17"],
+  };
+
+  // Initialize counts for each range
+  const rangeCounts: Record<string, number> = {
+    "VE-V0": 0,
+    "V1-V3": 0,
+    "V4-V6": 0,
+    "V7-V9": 0,
+    "V10+": 0,
+  };
+
+  // Process grades into ranges
+  distinctTicks.forEach(({ boulder }) => {
+    if (!boulder) return;
+    const grade = boulder.grade;
+
+    // Determine which range the grade belongs to
+    for (const [range, grades] of Object.entries(gradeRanges)) {
+      if (grades.includes(grade)) {
+        rangeCounts[range] = (rangeCounts[range] ?? 0) + 1;
+        break;
+      }
+    }
+  });
+
+  const result = {
+    totalUniqueBoulders: distinctTicks.length,
+    gradeRangeCounts: rangeCounts, // Use rangeCounts instead of individual grades
+  };
+
+  return result;
+}

@@ -28,7 +28,7 @@ export function TickCard({
   betaUrl,
 }: TickCardProps) {
   return (
-    <Card className={cn("w-full max-w-sm border-2")}>
+    <Card className="h-fit w-full max-w-sm border-2">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between gap-2">
           <CardTitle title={boulderName} className="truncate text-xl font-bold">

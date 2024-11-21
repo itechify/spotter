@@ -19,6 +19,25 @@ interface MountainProjectCSVEntry {
   "Your Rating": string | null;
 }
 
+function normalizeGrade(grade: string): string {
+  if (!grade) return "V-easy"; // Default fallback if grade is empty or null
+
+  // Match grades like "V0", "V1", etc., optionally with modifiers
+  const match = /^V(\d+)/.exec(grade);
+  if (match) {
+    return `V${match[1]}`; // Return the basic V scale grade (e.g., "V0", "V1")
+  }
+
+  // Handle ranges like "V0-1" by taking the lower bound
+  const rangeMatch = /^V(\d+)-/.exec(grade);
+  if (rangeMatch) {
+    return `V${rangeMatch[1]}`;
+  }
+
+  // If no match, return grade as-is or consider it "V-easy"
+  return "V-easy";
+}
+
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
   // Define as many FileRoutes as you like, each with a unique routeSlug
@@ -67,6 +86,7 @@ export const ourFileRouter = {
           entry["Route Type"]?.includes("Boulder") &&
           ["Send", "Flash"].includes(entry.Style)
         ) {
+          const normalizedGrade = normalizeGrade(entry.Rating); // Normalize the grade
           let boulder = existingBoulders.find((eb) => eb.url === entry.URL);
 
           // If boulder doesn't exist, insert it and retrieve the ID
@@ -76,7 +96,7 @@ export const ourFileRouter = {
               .values({
                 name: entry.Route,
                 url: entry.URL,
-                grade: entry.Rating,
+                grade: normalizedGrade,
               })
               .returning();
 

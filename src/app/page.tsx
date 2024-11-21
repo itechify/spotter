@@ -3,11 +3,14 @@ import { type Metadata } from "next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { SignedIn, SignedOut, SignIn } from "@clerk/nextjs";
 import TotalBouldersCard from "./_components/total-boulders-card";
-import { getMyMonthlyTickStats } from "~/server/queries";
+import {
+  getMyBouldersBreakdown,
+  getMyMonthlyTickStats,
+} from "~/server/queries";
 import { MonthlyTicksChart } from "./_components/monthly-ticks-chart";
 import { HighestSendCard } from "./_components/highest-send-card";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { PickaxeIcon } from "lucide-react";
+import { BouldersBreakdownChart } from "./_components/boulders-breakdown-chart";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +23,12 @@ export const metadata: Metadata = {
 async function MonthlyTicksChartWrapper() {
   const monthlyTickStats = await getMyMonthlyTickStats();
   return <MonthlyTicksChart data={monthlyTickStats} />;
+}
+
+// TODO: this seems hacky, but it works for now
+async function MonthlyBouldersBreakdownChartWrapper() {
+  const bouldersBreakdown = await getMyBouldersBreakdown();
+  return <BouldersBreakdownChart {...bouldersBreakdown} />;
 }
 
 export default async function DashboardPage() {
@@ -47,17 +56,7 @@ export default async function DashboardPage() {
               <div className="grid gap-4 xl:grid-cols-3">
                 <TotalBouldersCard />
                 <HighestSendCard />
-                <Card className="flex flex-col">
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Other Stat
-                    </CardTitle>
-                    <PickaxeIcon className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent className="flex h-full flex-col items-center justify-center gap-1 text-center">
-                    <div className="text-4xl font-bold">Todo</div>
-                  </CardContent>
-                </Card>
+                <MonthlyBouldersBreakdownChartWrapper />
               </div>
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-8">
                 <div className="col-span-4">
