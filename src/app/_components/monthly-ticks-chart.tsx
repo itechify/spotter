@@ -1,6 +1,6 @@
 "use client";
 
-import { Square, SquareCheckIcon } from "lucide-react";
+import { ChartColumnIcon, Square, SquareCheckIcon } from "lucide-react";
 import { useState } from "react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
@@ -54,7 +54,10 @@ export function MonthlyTicksChart({ data }: MonthlyTicksChartProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Monthly Boulders</CardTitle>
+        <div className="flex flex-row items-center justify-between space-y-0">
+          <CardTitle>Monthly Ticks</CardTitle>
+          <ChartColumnIcon className="h-6 w-6 text-muted-foreground" />
+        </div>
         <CardDescription>
           Your monthly send and flash count{" "}
           {includeAllYears ? "through the years" : "for this year"}.

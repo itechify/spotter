@@ -70,8 +70,8 @@ export function BouldersBreakdownChart({
   return (
     <Card className="flex flex-col">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
-        <CardTitle className="text-md font-medium">Grade Breakdown</CardTitle>
-        <ChartPieIcon className="h-4 w-4 text-muted-foreground" />
+        <CardTitle>Grade Breakdown</CardTitle>
+        <ChartPieIcon className="h-6 w-6 text-muted-foreground" />
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -133,9 +133,12 @@ export function BouldersBreakdownChart({
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center text-center font-medium leading-none">
+        <div className="flex items-center text-nowrap text-center font-medium leading-none">
           Your most ascended grade range is
-          <span className="ml-1 font-bold">{highestGradeRange}</span>.
+          <span className="ml-1 text-nowrap font-bold">
+            {highestGradeRange}
+          </span>
+          .
         </div>
       </CardFooter>
     </Card>

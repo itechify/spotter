@@ -9,8 +9,8 @@ export async function HighestSendCard() {
   return (
     <Card className="flex flex-col">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
-        <CardTitle className="text-md font-medium">Highest Send</CardTitle>
-        <AwardIcon className="h-4 w-4 text-muted-foreground" />
+        <CardTitle>Highest Send</CardTitle>
+        <AwardIcon className="h-6 w-6 text-muted-foreground" />
       </CardHeader>
       <CardContent className="flex h-full items-center justify-center">
         {tick && (
