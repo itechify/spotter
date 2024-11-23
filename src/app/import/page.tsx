@@ -1,6 +1,7 @@
 "use client";
 
 import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { CheckIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { usePostHog } from "posthog-js/react";
 import { toast } from "sonner";
@@ -51,7 +52,12 @@ export default function ImportPage() {
             }}
             onClientUploadComplete={() => {
               toast.dismiss("upload-begin");
-              toast("Ticks successfully uploaded!");
+              toast(
+                <div className="flex items-center gap-2">
+                  <CheckIcon className="h-4 w-4" />
+                  <span>Ticks successfully uploaded!</span>
+                </div>,
+              );
               router.refresh();
             }}
             className="border-primary/50"

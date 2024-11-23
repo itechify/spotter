@@ -18,6 +18,72 @@ interface TickCardProps {
 
 const ratingLabels = ["Ok", "Good", "Great", "Classic"];
 
+// TODO: utils file?
+export const getGradeBackgroundColorClass = (grade: string) => {
+  switch (grade) {
+    case "V-easy":
+    case "V0":
+      return "bg-beginner/10";
+    case "V1":
+    case "V2":
+      return "bg-intermediate-1/10";
+    case "V3":
+    case "V4":
+      return "bg-intermediate-2/10";
+    case "V5":
+    case "V6":
+      return "bg-advanced-1/10";
+    case "V7":
+    case "V8":
+      return "bg-advanced-2/10";
+    case "V9":
+    case "V10":
+    case "V11":
+    case "V12":
+    case "V13":
+    case "V14":
+    case "V15":
+    case "V16":
+    case "V17":
+      return "bg-elite/10";
+    default:
+      return "bg-beginner/10";
+  }
+};
+
+// TODO: utils file?
+export const getGradeBorderColorClass = (grade: string) => {
+  switch (grade) {
+    case "V-easy":
+    case "V0":
+      return "border-beginner";
+    case "V1":
+    case "V2":
+      return "border-intermediate-1";
+    case "V3":
+    case "V4":
+      return "border-intermediate-2";
+    case "V5":
+    case "V6":
+      return "border-advanced-1";
+    case "V7":
+    case "V8":
+      return "border-advanced-2";
+    case "V9":
+    case "V10":
+    case "V11":
+    case "V12":
+    case "V13":
+    case "V14":
+    case "V15":
+    case "V16":
+    case "V17":
+      return "border-elite";
+    default:
+      return "border-beginner";
+  }
+};
+
 export function TickCard({
   boulderName,
   boulderGrade,
@@ -30,7 +96,14 @@ export function TickCard({
   className,
 }: TickCardProps) {
   return (
-    <Card className={cn("h-fit w-full max-w-sm border-2", className)}>
+    <Card
+      className={cn(
+        "h-fit w-full max-w-sm border-2",
+        getGradeBackgroundColorClass(boulderGrade),
+        getGradeBorderColorClass(boulderGrade),
+        className,
+      )}
+    >
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between gap-2">
           <CardTitle title={boulderName} className="truncate text-xl font-bold">

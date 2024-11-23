@@ -3,39 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { TickCard } from "../boulders/my-ticks/_components/tick-card";
 import { getMyHardestSentBoulderTick } from "~/server/queries";
 
-// TODO: utils file?
-const getGradeBorderColor = (grade: string) => {
-  switch (grade) {
-    case "V-easy":
-    case "V0":
-      return "border-beginner";
-    case "V1":
-    case "V2":
-      return "border-intermediate-1";
-    case "V3":
-    case "V4":
-      return "border-intermediate-2";
-    case "V5":
-    case "V6":
-      return "border-advanced-1";
-    case "V7":
-    case "V8":
-      return "border-advanced-2";
-    case "V9":
-    case "V10":
-    case "V11":
-    case "V12":
-    case "V13":
-    case "V14":
-    case "V15":
-    case "V16":
-    case "V17":
-      return "border-elite";
-    default:
-      return "border-beginner";
-  }
-};
-
 export async function HardestBoulderSendCard() {
   const tick = await getMyHardestSentBoulderTick();
 
@@ -56,7 +23,6 @@ export async function HardestBoulderSendCard() {
             boulderUrl={tick.boulder.url}
             repeat={false}
             betaUrl={tick.betaUrl}
-            className={getGradeBorderColor(tick.boulder.grade)}
           />
         )}
       </CardContent>

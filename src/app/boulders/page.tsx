@@ -18,7 +18,6 @@ export default async function BouldersPage() {
             <BoulderCard
               key={boulder.id}
               sendStatus={sendStatus}
-              isClassic={Number(tick?.rating) > 3}
               {...boulder}
             />
           );

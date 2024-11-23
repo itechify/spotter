@@ -1,13 +1,17 @@
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { cn } from "~/lib/utils";
+import {
+  getGradeBackgroundColorClass,
+  getGradeBorderColorClass,
+} from "../my-ticks/_components/tick-card";
+import { ZapIcon } from "lucide-react";
 
 interface BoulderCardProps {
   name: string;
   grade: string;
   url: string;
   sendStatus: "flash" | "sent" | "unsent";
-  isClassic: boolean;
 }
 
 export function BoulderCard({
@@ -15,15 +19,13 @@ export function BoulderCard({
   grade,
   url,
   sendStatus,
-  isClassic,
 }: BoulderCardProps) {
   return (
     <Card
       className={cn(
         "w-full max-w-sm border-2",
-        sendStatus !== "unsent" && "bg-primary-foreground",
-        sendStatus === "flash" && "border-amber-500 dark:border-amber-300",
-        sendStatus === "sent" && "border-green-600",
+        sendStatus !== "unsent" && getGradeBackgroundColorClass(grade),
+        sendStatus !== "unsent" && getGradeBorderColorClass(grade),
       )}
     >
       <CardHeader className="pb-0">
@@ -39,10 +41,8 @@ export function BoulderCard({
             </a>
           </CardTitle>
           <div className="flex gap-1">
-            {isClassic && (
-              <div className="flex items-center justify-center text-lg font-semibold">
-                🌟
-              </div>
+            {sendStatus === "flash" && (
+              <ZapIcon className="h-6 w-6 fill-current text-yellow-500" />
             )}
             <Badge
               variant="secondary"
