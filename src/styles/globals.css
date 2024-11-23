@@ -38,10 +38,10 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
     --beginner: 84 81% 44%;
-    --intermediate-1: 217 91% 60%;
-    --intermediate-2: 48 96% 53%;
-    --advanced-1: 0 84% 60%;
-    --advanced-2: 258 90% 66%;
+    --novice: 217 91% 60%;
+    --intermediate: 48 96% 53%;
+    --advanced: 0 84% 60%;
+    --expert: 258 90% 66%;
     --elite: 330 81% 60%;
   }
   .dark {

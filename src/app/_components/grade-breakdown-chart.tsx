@@ -18,19 +18,19 @@ const chartConfig = {
   },
   "V1-V2": {
     label: "V1-V2",
-    color: "hsl(var(--intermediate-1))",
+    color: "hsl(var(--novice))",
   },
-  "V3-V4": {
-    label: "V3-V4",
-    color: "hsl(var(--intermediate-2))",
+  "V3-V5": {
+    label: "V3-V5",
+    color: "hsl(var(--intermediate))",
   },
-  "V5-V6": {
-    label: "V5-V6",
-    color: "hsl(var(--advanced-1))",
+  "V6-V8": {
+    label: "V6-V8",
+    color: "hsl(var(--advanced))",
   },
-  "V7-V8": {
-    label: "V7-V9",
-    color: "hsl(var(--advanced-2))",
+  "V9-V12": {
+    label: "V9-V12",
+    color: "hsl(var(--expert))",
   },
   "V9+": {
     label: "V9+",

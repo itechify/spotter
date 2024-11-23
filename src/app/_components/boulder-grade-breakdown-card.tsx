@@ -16,14 +16,14 @@ const getGradeRangeColor = (gradeRange: string) => {
     case "VE-V0":
       return "text-beginner";
     case "V1-V2":
-      return "text-intermediate-1";
-    case "V3-V4":
-      return "text-intermediate-2";
-    case "V5-V6":
-      return "text-advanced-1";
-    case "V7-V8":
-      return "text-advanced-2";
-    case "V9+":
+      return "text-novice";
+    case "V3-V5":
+      return "text-intermediate";
+    case "V6-V8":
+      return "text-advanced";
+    case "V9-V12":
+      return "text-expert";
+    case "V13+":
       return "text-elite";
     default:
       return "text-beginner";

@@ -26,20 +26,20 @@ export const getGradeBackgroundColorClass = (grade: string) => {
       return "bg-beginner/10";
     case "V1":
     case "V2":
-      return "bg-intermediate-1/10";
+      return "bg-novice/10";
     case "V3":
     case "V4":
-      return "bg-intermediate-2/10";
     case "V5":
+      return "bg-intermediate/10";
     case "V6":
-      return "bg-advanced-1/10";
     case "V7":
     case "V8":
-      return "bg-advanced-2/10";
+      return "bg-advanced/10";
     case "V9":
     case "V10":
     case "V11":
     case "V12":
+      return "bg-expert/10";
     case "V13":
     case "V14":
     case "V15":
@@ -59,20 +59,20 @@ export const getGradeBorderColorClass = (grade: string) => {
       return "border-beginner";
     case "V1":
     case "V2":
-      return "border-intermediate-1";
+      return "border-novice";
     case "V3":
     case "V4":
-      return "border-intermediate-2";
     case "V5":
+      return "border-intermediate";
     case "V6":
-      return "border-advanced-1";
     case "V7":
     case "V8":
-      return "border-advanced-2";
+      return "border-advanced";
     case "V9":
     case "V10":
     case "V11":
     case "V12":
+      return "border-expert";
     case "V13":
     case "V14":
     case "V15":

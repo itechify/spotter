@@ -67,14 +67,10 @@ export default withUt({
           ring: "hsl(var(--sidebar-ring))",
         },
         beginner: "hsl(var(--beginner))",
-        intermediate: {
-          "1": "hsl(var(--intermediate-1))",
-          "2": "hsl(var(--intermediate-2))",
-        },
-        advanced: {
-          "1": "hsl(var(--advanced-1))",
-          "2": "hsl(var(--advanced-2))",
-        },
+        novice: "hsl(var(--novice))",
+        intermediate: "hsl(var(--intermediate))",
+        advanced: "hsl(var(--advanced))",
+        expert: "hsl(var(--expert))",
         elite: "hsl(var(--elite))",
       },
     },

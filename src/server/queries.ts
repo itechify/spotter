@@ -176,19 +176,20 @@ export async function getMyBoulderGradeBreakdown() {
   const gradeRanges: Record<string, string[]> = {
     "VE-V0": ["V-easy", "V0"],
     "V1-V2": ["V1", "V2"],
-    "V3-V4": ["V3", "V4"],
-    "V5-V6": ["V5", "V6"],
-    "V7-V8": ["V7", "V8"],
-    "V9+": ["V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16", "V17"],
+    "V3-V5": ["V3", "V4", "V5"],
+    "V6-V8": ["V6", "V7", "V8"],
+    "V9-V12": ["V9", "V10", "V11", "V12"],
+    "V13+": ["V13", "V14", "V15", "V16", "V17"],
   };
 
   // Initialize counts for each range
   const rangeCounts: Record<string, number> = {
     "VE-V0": 0,
-    "V1-V3": 0,
-    "V4-V6": 0,
-    "V7-V9": 0,
-    "V10+": 0,
+    "V1-V2": 0,
+    "V3-V5": 0,
+    "V6-V8": 0,
+    "V9-V12": 0,
+    "V13+": 0,
   };
 
   // Process grades into ranges
