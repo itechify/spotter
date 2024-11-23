@@ -13,6 +13,7 @@ interface TickCardProps {
   flash: boolean;
   repeat: boolean;
   betaUrl: string | null;
+  className?: string;
 }
 
 const ratingLabels = ["Ok", "Good", "Great", "Classic"];
@@ -26,9 +27,10 @@ export function TickCard({
   flash,
   repeat,
   betaUrl,
+  className,
 }: TickCardProps) {
   return (
-    <Card className="h-fit w-full max-w-sm border-2">
+    <Card className={cn("h-fit w-full max-w-sm border-2", className)}>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between gap-2">
           <CardTitle title={boulderName} className="truncate text-xl font-bold">

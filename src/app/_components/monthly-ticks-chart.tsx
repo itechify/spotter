@@ -21,7 +21,7 @@ import {
 } from "~/components/ui/chart";
 import { Toggle } from "~/components/ui/toggle";
 
-const chartConfig = {
+export const ticksChartConfig = {
   sendCount: {
     label: "Sends",
     color: "#65a30d",
@@ -73,7 +73,7 @@ export function MonthlyTicksChart({ data }: MonthlyTicksChartProps) {
             All Years
           </Toggle>
         </div>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={ticksChartConfig}>
           <BarChart accessibilityLayer data={data}>
             <CartesianGrid vertical={false} />
             <XAxis

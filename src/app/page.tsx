@@ -2,16 +2,12 @@ import { type Metadata } from "next";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { SignedIn, SignedOut, SignIn } from "@clerk/nextjs";
-import {
-  getMyBouldersBreakdown,
-  getMyMonthlyTickStats,
-  getMyTicks,
-} from "~/server/queries";
+import { getMyMonthlyTickStats } from "~/server/queries";
 import { MonthlyTicksChart } from "./_components/monthly-ticks-chart";
-import { HighestSendCard } from "./_components/highest-send-card";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { BouldersBreakdownChart } from "./_components/boulders-breakdown-chart";
-import { TotalBouldersChart } from "./_components/total-boulders-chart";
+import { BoulderTotalsCard } from "./_components/boulder-totals-card";
+import { HardestBoulderSendCard } from "./_components/hardest-boulder-send-card";
+import { BoulderGradeBreakdownCard } from "./_components/boulder-grade-breakdown-card";
 
 export const dynamic = "force-dynamic";
 
@@ -24,24 +20,6 @@ export const metadata: Metadata = {
 async function MonthlyTicksChartWrapper() {
   const monthlyTickStats = await getMyMonthlyTickStats();
   return <MonthlyTicksChart data={monthlyTickStats} />;
-}
-
-// TODO: this seems hacky, but it works for now
-async function MonthlyBouldersBreakdownChartWrapper() {
-  const bouldersBreakdown = await getMyBouldersBreakdown();
-  return <BouldersBreakdownChart {...bouldersBreakdown} />;
-}
-
-// TODO: this seems hacky, but it works for now
-async function TotalBouldersChartWrapper() {
-  const ticks = await getMyTicks();
-  const flashCount = ticks.filter((tick) => tick.flash).length;
-  return (
-    <TotalBouldersChart
-      flashCount={flashCount}
-      sendCount={ticks.length - flashCount}
-    />
-  );
 }
 
 export default async function DashboardPage() {
@@ -67,9 +45,9 @@ export default async function DashboardPage() {
             </TabsList>
             <TabsContent value="bouldering" className="space-y-4">
               <div className="grid gap-4 xl:grid-cols-3">
-                <TotalBouldersChartWrapper />
-                <HighestSendCard />
-                <MonthlyBouldersBreakdownChartWrapper />
+                <BoulderTotalsCard />
+                <HardestBoulderSendCard />
+                <BoulderGradeBreakdownCard />
               </div>
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-8">
                 <div className="col-span-4">

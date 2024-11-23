@@ -27,26 +27,26 @@ export async function getBoulders() {
   return boulders;
 }
 
-export async function getMyHighestSentBoulderTick() {
+export async function getMyHardestSentBoulderTick() {
   const user = auth();
   const userId = (await user).userId;
 
   if (!userId) throw new Error("Unauthorized");
 
   // Join ticks and boulders tables and order by the boulder grade
-  const highestSentBoulderTick = await db
+  const hardestSentBoulderTick = await db
     .select()
     .from(ticks)
     .innerJoin(boulders, eq(ticks.boulderId, boulders.id))
     .where(eq(ticks.userId, userId))
     .orderBy(desc(boulders.grade)) // Order by boulder grade
-    .limit(1); // Get the highest-rated tick
+    .limit(1); // Get the hardest-rated tick
 
-  if (!highestSentBoulderTick[0]) return null;
+  if (!hardestSentBoulderTick[0]) return null;
 
   return {
-    ...highestSentBoulderTick[0].tick,
-    boulder: highestSentBoulderTick[0].boulder,
+    ...hardestSentBoulderTick[0].tick,
+    boulder: hardestSentBoulderTick[0].boulder,
   };
 }
 
@@ -160,7 +160,7 @@ function fillMissingMonths(
   return filledStats;
 }
 
-export async function getMyBouldersBreakdown() {
+export async function getMyBoulderGradeBreakdown() {
   const user = auth();
   const userId = (await user).userId;
 
