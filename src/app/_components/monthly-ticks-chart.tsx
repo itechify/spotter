@@ -52,7 +52,7 @@ export function MonthlyTicksChart({ data }: MonthlyTicksChartProps) {
   }
 
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <div className="flex flex-row items-center justify-between space-y-0">
           <CardTitle>Monthly Ticks</CardTitle>

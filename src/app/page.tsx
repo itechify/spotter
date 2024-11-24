@@ -2,12 +2,11 @@ import { type Metadata } from "next";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { SignedIn, SignedOut, SignIn } from "@clerk/nextjs";
-import { getMyMonthlyTickStats } from "~/server/queries";
-import { MonthlyTicksChart } from "./_components/monthly-ticks-chart";
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { BoulderTotalsCard } from "./_components/boulder-totals-card";
 import { HardestBoulderSendCard } from "./_components/hardest-boulder-send-card";
 import { BoulderGradeBreakdownCard } from "./_components/boulder-grade-breakdown-card";
+import { LatestTicksCard } from "./_components/latest-ticks-card";
+import { MonthlyTicksCard } from "./_components/monthly-ticks-card";
 
 export const dynamic = "force-dynamic";
 
@@ -15,12 +14,6 @@ export const metadata: Metadata = {
   title: "Spotter Dashboard",
   description: "The main dashboard for the Spotter app.",
 };
-
-// TODO: this seems hacky, but it works for now
-async function MonthlyTicksChartWrapper() {
-  const monthlyTickStats = await getMyMonthlyTickStats();
-  return <MonthlyTicksChart data={monthlyTickStats} />;
-}
 
 export default async function DashboardPage() {
   return (
@@ -51,15 +44,10 @@ export default async function DashboardPage() {
               </div>
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-8">
                 <div className="col-span-4">
-                  <MonthlyTicksChartWrapper />
+                  <MonthlyTicksCard />
                 </div>
                 <div className="col-span-4">
-                  <Card className="h-full">
-                    <CardHeader>
-                      <CardTitle>Other Graph</CardTitle>
-                    </CardHeader>
-                    <CardContent>Todo</CardContent>
-                  </Card>
+                  <LatestTicksCard />
                 </div>
               </div>
             </TabsContent>
