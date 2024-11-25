@@ -19,14 +19,14 @@ export async function LatestTicksCard() {
     }
   });
 
-  const ticksWithRepeatFlag = ticks.slice(0, 3).map((tick) => ({
+  const ticksWithRepeatFlag = ticks.slice(0, 5).map((tick) => ({
     ...tick,
     repeat:
       new Date(tick.date) > new Date(boulderFirstTicks.get(tick.boulder.id)!),
   }));
 
   return (
-    <Card className="flex flex-col">
+    <Card className="flex h-full flex-col">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <CardTitle>Latest Ticks</CardTitle>
         <ScrollTextIcon className="h-6 w-6 text-muted-foreground" />
