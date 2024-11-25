@@ -23,6 +23,7 @@ export async function HardestBoulderSendCard() {
             boulderUrl={tick.boulder.url}
             repeat={false}
             betaUrl={tick.betaUrl}
+            className="w-4/5"
           />
         )}
       </CardContent>

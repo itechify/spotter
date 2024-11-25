@@ -98,7 +98,7 @@ export function TickCard({
   return (
     <Card
       className={cn(
-        "h-fit w-full max-w-sm border-2",
+        "h-fit w-96 min-w-64 border-2",
         getGradeBackgroundColorClass(boulderGrade),
         getGradeBorderColorClass(boulderGrade),
         className,
@@ -173,7 +173,7 @@ export function TickCard({
               Beta
             </a>
           )}
-          <span className="flex items-end text-sm font-medium text-muted-foreground">
+          <span className="flex items-end text-nowrap text-sm font-medium text-muted-foreground">
             <CalendarIcon className="mr-1 h-5 w-5" />
             {new Date(date).toLocaleDateString("en-US", {
               year: "numeric",

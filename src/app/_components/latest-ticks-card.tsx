@@ -19,7 +19,7 @@ export async function LatestTicksCard() {
     }
   });
 
-  const ticksWithRepeatFlag = ticks.slice(0, 5).map((tick) => ({
+  const ticksWithRepeatFlag = ticks.slice(0, 10).map((tick) => ({
     ...tick,
     repeat:
       new Date(tick.date) > new Date(boulderFirstTicks.get(tick.boulder.id)!),
@@ -31,8 +31,8 @@ export async function LatestTicksCard() {
         <CardTitle>Latest Ticks</CardTitle>
         <ScrollTextIcon className="h-6 w-6 text-muted-foreground" />
       </CardHeader>
-      <CardContent className="flex h-full flex-col items-center justify-center gap-2">
-        {ticksWithRepeatFlag.map((tick) => (
+      <CardContent className="grid h-full auto-rows-min grid-cols-1 place-content-center items-center gap-4 2xl:grid-cols-2">
+        {ticksWithRepeatFlag.map((tick, index) => (
           <TickCard
             key={tick.id}
             boulderName={tick.boulder.name}
@@ -43,6 +43,7 @@ export async function LatestTicksCard() {
             flash={tick.flash}
             repeat={tick.repeat}
             betaUrl={tick.betaUrl}
+            className={`w-full ${index >= 5 && "hidden 2xl:block"}`}
           />
         ))}
       </CardContent>
