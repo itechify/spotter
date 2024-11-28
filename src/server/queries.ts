@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { and, desc, eq, sql } from "drizzle-orm";
 import { boulders, ticks, todos } from "./db/schema";
 import { revalidatePath } from "next/cache";
+import analyticsServerClient from "./analytics";
 
 export async function getBouldersWithMyTicks() {
   const user = auth();
@@ -239,6 +240,14 @@ export async function addTodo(boulderId: number) {
     userId,
   });
 
+  analyticsServerClient.capture({
+    distinctId: userId,
+    event: "user added todo",
+    properties: {
+      boulderId,
+    },
+  });
+
   revalidatePath("/boulders");
 
   return newTodo;
@@ -253,6 +262,14 @@ export async function removeTodo(boulderId: number) {
   await db
     .delete(todos)
     .where(and(eq(todos.boulderId, boulderId), eq(todos.userId, userId)));
+
+  analyticsServerClient.capture({
+    distinctId: userId,
+    event: "user removed todo",
+    properties: {
+      boulderId,
+    },
+  });
 
   revalidatePath("/boulders");
 }
