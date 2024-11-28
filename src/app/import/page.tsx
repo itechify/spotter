@@ -1,7 +1,7 @@
 "use client";
 
 import { SignedIn, SignedOut } from "@clerk/nextjs";
-import { CheckIcon } from "lucide-react";
+import { CheckIcon, XCircleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { usePostHog } from "posthog-js/react";
 import { toast } from "sonner";
@@ -63,6 +63,16 @@ export default function ImportPage() {
             className="border-primary/50"
             config={{
               mode: "auto",
+            }}
+            onUploadError={(error) => {
+              toast.dismiss("upload-begin");
+              posthog.capture("csv upload error", { error });
+              toast(
+                <div className="flex items-center gap-2">
+                  <XCircleIcon className="h-4 w-4" />
+                  <span>Error uploading ticks: {error.message}</span>
+                </div>,
+              );
             }}
           />
         </div>

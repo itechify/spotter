@@ -13,6 +13,6 @@
 - [ ] Use Next/Image component
 - [x] Error management (w/ Sentry)
 - [ ] Routing/image page (parallel route)
-- [ ] Delete button (w/ Server Actions)
+- [x] Add / remove todo button (w/ Server Actions)
 - [x] Analytics (posthog)
 - [ ] Ratelimiting (upstash)
