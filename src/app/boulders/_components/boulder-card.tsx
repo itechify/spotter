@@ -5,20 +5,32 @@ import {
   getGradeBackgroundColorClass,
   getGradeBorderColorClass,
 } from "../my-ticks/_components/tick-card";
-import { ZapIcon } from "lucide-react";
+import { BookmarkIcon, ZapIcon } from "lucide-react";
+import { Button } from "~/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "~/components/ui/tooltip";
+import { addTodo, removeTodo } from "~/server/queries";
 
 interface BoulderCardProps {
+  id: number;
   name: string;
   grade: string;
   url: string;
   sendStatus: "flash" | "sent" | "unsent";
+  isTodo: boolean;
 }
 
 export function BoulderCard({
+  id,
   name,
   grade,
   url,
   sendStatus,
+  isTodo,
 }: BoulderCardProps) {
   return (
     <Card
@@ -40,7 +52,37 @@ export function BoulderCard({
               {name}
             </a>
           </CardTitle>
-          <div className="flex gap-1">
+          <div className="flex h-10 items-center gap-1">
+            {sendStatus === "unsent" && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <form
+                      action={async () => {
+                        "use server";
+
+                        if (isTodo) {
+                          await removeTodo(id);
+                        } else {
+                          await addTodo(id);
+                        }
+                      }}
+                    >
+                      <Button type="submit" variant="ghost" size="icon">
+                        <BookmarkIcon
+                          className={cn("!h-5 !w-5", isTodo && "fill-primary")}
+                        />
+                      </Button>
+                    </form>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>
+                      {isTodo ? "Remove from To-Do List" : "Add to To-Do List"}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
             {sendStatus === "flash" && (
               <ZapIcon className="h-6 w-6 fill-current text-yellow-500" />
             )}

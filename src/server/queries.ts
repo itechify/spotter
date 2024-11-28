@@ -1,8 +1,9 @@
 import "server-only";
 import { db } from "./db";
 import { auth } from "@clerk/nextjs/server";
-import { desc, eq, sql } from "drizzle-orm";
-import { boulders, ticks } from "./db/schema";
+import { and, desc, eq, sql } from "drizzle-orm";
+import { boulders, ticks, todos } from "./db/schema";
+import { revalidatePath } from "next/cache";
 
 export async function getBouldersWithMyTicks() {
   const user = auth();
@@ -212,4 +213,46 @@ export async function getMyBoulderGradeBreakdown() {
   };
 
   return result;
+}
+
+export async function getMyTodos() {
+  const user = auth();
+  const userId = (await user).userId;
+
+  if (!userId) throw new Error("Unauthorized");
+
+  const todos = await db.query.todos.findMany({
+    where: (todo, { eq }) => eq(todo.userId, userId),
+  });
+
+  return todos;
+}
+
+export async function addTodo(boulderId: number) {
+  const user = auth();
+  const userId = (await user).userId;
+
+  if (!userId) throw new Error("Unauthorized");
+
+  const newTodo = await db.insert(todos).values({
+    boulderId,
+    userId,
+  });
+
+  revalidatePath("/boulders");
+
+  return newTodo;
+}
+
+export async function removeTodo(boulderId: number) {
+  const user = auth();
+  const userId = (await user).userId;
+
+  if (!userId) throw new Error("Unauthorized");
+
+  await db
+    .delete(todos)
+    .where(and(eq(todos.boulderId, boulderId), eq(todos.userId, userId)));
+
+  revalidatePath("/boulders");
 }

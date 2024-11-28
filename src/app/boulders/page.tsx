@@ -1,10 +1,12 @@
-import { getBouldersWithMyTicks } from "~/server/queries";
+import { getBouldersWithMyTicks, getMyTodos } from "~/server/queries";
 import { BoulderCard } from "./_components/boulder-card";
 
 export const dynamic = "force-dynamic";
 
 export default async function BouldersPage() {
   const boulders = await getBouldersWithMyTicks();
+  // TODO: get this with the boulders query instead?
+  const myTodos = await getMyTodos();
 
   return (
     <div className="p-4">
@@ -18,6 +20,7 @@ export default async function BouldersPage() {
             <BoulderCard
               key={boulder.id}
               sendStatus={sendStatus}
+              isTodo={myTodos.some((todo) => todo.boulderId === boulder.id)}
               {...boulder}
             />
           );

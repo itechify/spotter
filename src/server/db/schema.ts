@@ -61,3 +61,22 @@ export const ticksRelations = relations(ticks, ({ one }) => ({
     references: [boulders.id],
   }),
 }));
+
+export const todos = createTable("todo", {
+  id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
+  boulderId: integer("boulder_id").notNull(),
+  userId: varchar("user_id", { length: 256 }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+    () => new Date(),
+  ),
+});
+
+export const todosRelations = relations(todos, ({ one }) => ({
+  boulder: one(boulders, {
+    fields: [todos.boulderId],
+    references: [boulders.id],
+  }),
+}));
