@@ -1,6 +1,5 @@
 import { getBouldersWithMyTicks, getMyTodos } from "~/server/queries";
 import { BoulderCard } from "./_components/boulder-card";
-import { Toggle } from "~/components/ui/toggle";
 import { OnlyTodosToggle } from "./_components/only-todos-toggle";
 
 export const dynamic = "force-dynamic";

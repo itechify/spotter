@@ -1,4 +1,3 @@
-import { getMyBoulderGradeBreakdown } from "~/server/queries";
 import { GradeBreakdownChart } from "./grade-breakdown-chart";
 import {
   Card,
@@ -9,6 +8,7 @@ import {
 } from "~/components/ui/card";
 import { ChartPieIcon } from "lucide-react";
 import { cn } from "~/lib/utils";
+import { getBoulderGradeBreakdown } from "~/server/queries";
 
 // TODO: utils file?
 const getGradeRangeColor = (gradeRange: string) => {
@@ -30,8 +30,14 @@ const getGradeRangeColor = (gradeRange: string) => {
   }
 };
 
-export async function BoulderGradeBreakdownCard() {
-  const boulderGradeBreakdown = await getMyBoulderGradeBreakdown();
+type BoulderGradeBreakdownCardProps = {
+  userId: string;
+};
+
+export async function BoulderGradeBreakdownCard({
+  userId,
+}: BoulderGradeBreakdownCardProps) {
+  const boulderGradeBreakdown = await getBoulderGradeBreakdown(userId);
 
   const highestGradeRange = Object.keys(
     boulderGradeBreakdown.gradeRangeCounts,

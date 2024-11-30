@@ -1,10 +1,12 @@
-import { getMyTicks } from "~/server/queries";
+import { getTicks } from "~/server/queries";
 import { TickCard } from "./_components/tick-card";
+import { auth } from "@clerk/nextjs/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function MyBoulderTicksPage() {
-  const ticks = await getMyTicks();
+  const userId = (await auth()).userId;
+  const ticks = await getTicks(userId ?? "");
 
   // Preprocess to determine if a tick is a repeat
   const boulderFirstTicks = new Map<number, string>();

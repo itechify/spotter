@@ -1,10 +1,17 @@
-import { getMyTicks } from "~/server/queries";
+import { getTicks } from "~/server/queries";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { ScrollTextIcon } from "lucide-react";
 import { TickCard } from "../boulders/my-ticks/_components/tick-card";
 
-export async function LatestTicksCard() {
-  const ticks = await getMyTicks();
+type LatestTicksCardProps = {
+  userId: string;
+};
+
+/**
+ * A card that shows the latest ticks for a user.
+ */
+export async function LatestTicksCard({ userId }: LatestTicksCardProps) {
+  const ticks = await getTicks(userId);
 
   // TODO: The following is the same as in MyBoulderTicksPage
   const boulderFirstTicks = new Map<number, string>();

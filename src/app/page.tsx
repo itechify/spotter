@@ -7,6 +7,7 @@ import { HardestBoulderSendCard } from "./_components/hardest-boulder-send-card"
 import { BoulderGradeBreakdownCard } from "./_components/boulder-grade-breakdown-card";
 import { LatestTicksCard } from "./_components/latest-ticks-card";
 import { MonthlyTicksCard } from "./_components/monthly-ticks-card";
+import { auth } from "@clerk/nextjs/server";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +17,8 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardPage() {
+  const userId = (await auth()).userId;
+
   return (
     <>
       <SignedIn>
@@ -38,16 +41,16 @@ export default async function DashboardPage() {
             </TabsList>
             <TabsContent value="bouldering" className="space-y-4">
               <div className="grid gap-4 xl:grid-cols-3">
-                <BoulderTotalsCard />
-                <HardestBoulderSendCard />
-                <BoulderGradeBreakdownCard />
+                <BoulderTotalsCard userId={userId!} />
+                <HardestBoulderSendCard userId={userId!} />
+                <BoulderGradeBreakdownCard userId={userId!} />
               </div>
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-8">
                 <div className="col-span-4">
-                  <MonthlyTicksCard />
+                  <MonthlyTicksCard userId={userId!} />
                 </div>
                 <div className="col-span-4">
-                  <LatestTicksCard />
+                  <LatestTicksCard userId={userId!} />
                 </div>
               </div>
             </TabsContent>

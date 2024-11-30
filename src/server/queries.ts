@@ -29,12 +29,7 @@ export async function getBoulders() {
   return boulders;
 }
 
-export async function getMyHardestSentBoulderTick() {
-  const user = auth();
-  const userId = (await user).userId;
-
-  if (!userId) throw new Error("Unauthorized");
-
+export async function getHardestBoulderTick(userId: string) {
   // Join ticks and boulders tables and order by the boulder grade
   const hardestSentBoulderTick = await db
     .select()
@@ -52,12 +47,7 @@ export async function getMyHardestSentBoulderTick() {
   };
 }
 
-export async function getMyTicks() {
-  const user = auth();
-  const userId = (await user).userId;
-
-  if (!userId) throw new Error("Unauthorized");
-
+export async function getTicks(userId: string) {
   const ticks = await db.query.ticks.findMany({
     with: {
       boulder: true,
@@ -69,12 +59,7 @@ export async function getMyTicks() {
   return ticks;
 }
 
-export async function getMyMonthlyTickStats() {
-  const user = auth();
-  const userId = (await user).userId;
-
-  if (!userId) throw new Error("Unauthorized");
-
+export async function getMonthlyTickStats(userId: string) {
   const tickStats = (
     await db
       .select({
@@ -162,12 +147,7 @@ function fillMissingMonths(
   return filledStats;
 }
 
-export async function getMyBoulderGradeBreakdown() {
-  const user = auth();
-  const userId = (await user).userId;
-
-  if (!userId) throw new Error("Unauthorized");
-
+export async function getBoulderGradeBreakdown(userId: string) {
   const distinctTicks = await db
     .selectDistinctOn([ticks.boulderId])
     .from(ticks)

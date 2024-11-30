@@ -1,10 +1,19 @@
 import { AwardIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { TickCard } from "../boulders/my-ticks/_components/tick-card";
-import { getMyHardestSentBoulderTick } from "~/server/queries";
+import { getHardestBoulderTick } from "~/server/queries";
 
-export async function HardestBoulderSendCard() {
-  const tick = await getMyHardestSentBoulderTick();
+type HardestBoulderSendCardProps = {
+  userId: string;
+};
+
+/**
+ * A card that shows the hardest sent boulder tick for a user.
+ */
+export async function HardestBoulderSendCard({
+  userId,
+}: HardestBoulderSendCardProps) {
+  const tick = await getHardestBoulderTick(userId);
 
   return (
     <Card className="flex flex-col">
