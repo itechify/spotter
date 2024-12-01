@@ -1,10 +1,7 @@
 // middleware.ts
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-const isProtectedRoute = createRouteMatcher([
-  "/boulders/my-ticks(.*)",
-  "/import(.*)",
-]);
+const isProtectedRoute = createRouteMatcher(["/boulders(.*)", "/import(.*)"]);
 
 export default clerkMiddleware(async (auth, request) => {
   if (isProtectedRoute(request)) await auth.protect();
