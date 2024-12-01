@@ -7,7 +7,8 @@ import { HardestBoulderSendCard } from "./_components/hardest-boulder-send-card"
 import { BoulderGradeBreakdownCard } from "./_components/boulder-grade-breakdown-card";
 import { LatestTicksCard } from "./_components/latest-ticks-card";
 import { MonthlyTicksCard } from "./_components/monthly-ticks-card";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
+import { UserSelect } from "./_components/user-select";
 
 export const dynamic = "force-dynamic";
 
@@ -16,27 +17,45 @@ export const metadata: Metadata = {
   description: "The main dashboard for the Spotter app.",
 };
 
-export default async function DashboardPage() {
-  const userId = (await auth()).userId;
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ userId?: string }>;
+}) {
+  const authUser = await auth();
+  const clerk = await clerkClient();
+  const userId = (await searchParams).userId ?? authUser.userId;
+
+  const userInfo = userId ? await clerk.users.getUser(userId) : null;
+
+  const userList = await clerk.users.getUserList();
+
+  /*
+  const userList = await clerk.users.getUserList({
+    userId: [`-${authUser.userId}`],
+  });
+  */
 
   return (
     <>
       <SignedIn>
         <div className="flex-1 space-y-4 p-8 pt-6">
-          <div className="flex items-center justify-between space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight">My Spotter</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-3xl font-bold tracking-tight">
+              {`${userInfo?.firstName}'s Spotter`}
+            </h2>
+            <UserSelect
+              data={userList.data.map((user) => ({
+                id: user.id,
+                name: user.fullName ?? "",
+              }))}
+            />
           </div>
           <Tabs defaultValue="bouldering" className="space-y-4">
             <TabsList>
               <TabsTrigger value="bouldering">Bouldering</TabsTrigger>
-              <TabsTrigger value="todo1" disabled>
-                Todo 1
-              </TabsTrigger>
-              <TabsTrigger value="todo2" disabled>
-                Todo 2
-              </TabsTrigger>
-              <TabsTrigger value="todo3" disabled>
-                Todo 3
+              <TabsTrigger value="sport" disabled>
+                Sport (Todo)
               </TabsTrigger>
             </TabsList>
             <TabsContent value="bouldering" className="space-y-4">
