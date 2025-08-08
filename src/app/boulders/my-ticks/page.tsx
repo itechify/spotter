@@ -84,13 +84,26 @@ export default async function MyBoulderTicksPage({
   const to = sp.to as string | undefined; // YYYY-MM-DD
   const sort = (sp.sort as string | undefined) ?? "date_desc";
 
+  // Determine rating filter mode
+  const ratingFilterMode: "all" | "rated" | "unrated" =
+    rated === unrated ? "all" : rated ? "rated" : "unrated";
+
   // Apply filtering
   let filtered = ticksWithRepeatFlag.filter((t) => {
     if (q && !t.boulder.name.toLowerCase().includes(q)) return false;
     if (onlyFlash && !t.flash) return false;
     if (onlyRepeat && !t.repeat) return false;
-    if (rated && (t.rating == null || Number(t.rating) === 0)) return false;
-    if (unrated && t.rating != null && Number(t.rating) > 0) return false;
+    if (
+      ratingFilterMode === "rated" &&
+      (t.rating == null || Number(t.rating) === 0)
+    )
+      return false;
+    if (
+      ratingFilterMode === "unrated" &&
+      t.rating != null &&
+      Number(t.rating) > 0
+    )
+      return false;
     if (gradeMin && gradeIndex(t.boulder.grade) < gradeIndex(gradeMin))
       return false;
     if (gradeMax && gradeIndex(t.boulder.grade) > gradeIndex(gradeMax))
