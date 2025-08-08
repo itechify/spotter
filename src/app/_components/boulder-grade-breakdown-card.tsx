@@ -39,6 +39,10 @@ export async function BoulderGradeBreakdownCard({
 }: BoulderGradeBreakdownCardProps) {
   const boulderGradeBreakdown = await getBoulderGradeBreakdown(userId);
 
+  if (boulderGradeBreakdown.totalUniqueBoulders === 0) {
+    return null;
+  }
+
   const highestGradeRange = Object.keys(
     boulderGradeBreakdown.gradeRangeCounts,
   ).reduce((a, b) =>
