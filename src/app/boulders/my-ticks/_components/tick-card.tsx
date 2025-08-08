@@ -212,7 +212,7 @@ export function TickCard({
               <Star
                 key={index}
                 className={`h-5 w-5 ${
-                  rating && String(index) < rating
+                  index + 1 <= Number(rating ?? 0)
                     ? "fill-current text-yellow-500"
                     : "text-gray-300"
                 }`}
