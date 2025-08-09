@@ -4,7 +4,7 @@ import { cn } from "~/lib/utils";
 import {
   getGradeBackgroundColorClass,
   getGradeBorderColorClass,
-} from "../my-ticks/_components/tick-card";
+} from "~/lib/grade-style";
 import { BookmarkIcon, ZapIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
