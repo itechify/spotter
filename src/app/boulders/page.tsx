@@ -1,4 +1,4 @@
-import { getBouldersWithMyTicks, getMyTodos } from "~/server/queries";
+import { getBouldersWithMyTicksPaginated, getMyTodos } from "~/server/queries";
 import { BoulderCard } from "./_components/boulder-card";
 import { OnlyTodosToggle } from "./_components/only-todos-toggle";
 
@@ -9,17 +9,14 @@ export default async function BouldersPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  let boulders = await getBouldersWithMyTicks();
-  // TODO: get this with the boulders query instead?
-  const myTodos = await getMyTodos();
-  const { onlyTodos } = await searchParams;
+  const sp = await searchParams;
+  const page = Number(sp.page ?? 1);
+  const perPage = Number(sp.perPage ?? 48);
+  const onlyTodos = sp.onlyTodos !== undefined;
 
-  // Filter out boulders that are not in my todos if onlyTodos is in the search params
-  if (onlyTodos !== undefined) {
-    boulders = boulders.filter((boulder) =>
-      myTodos.some((todo) => todo.boulderId === boulder.id),
-    );
-  }
+  const { items: boulders, hasNextPage } =
+    await getBouldersWithMyTicksPaginated({ page, perPage, onlyTodos });
+  const myTodos = await getMyTodos();
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -41,6 +38,24 @@ export default async function BouldersPage({
             />
           );
         })}
+      </div>
+      <div className="flex items-center justify-center gap-4 py-6">
+        {page > 1 && (
+          <a
+            className="text-primary underline-offset-4 hover:underline"
+            href={`/boulders?page=${page - 1}&perPage=${perPage}${onlyTodos ? "&onlyTodos=true" : ""}`}
+          >
+            Previous
+          </a>
+        )}
+        {hasNextPage && (
+          <a
+            className="text-primary underline-offset-4 hover:underline"
+            href={`/boulders?page=${page + 1}&perPage=${perPage}${onlyTodos ? "&onlyTodos=true" : ""}`}
+          >
+            Next
+          </a>
+        )}
       </div>
     </div>
   );

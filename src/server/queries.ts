@@ -6,6 +6,10 @@ import { boulders, ticks, todos } from "./db/schema";
 import { revalidatePath } from "next/cache";
 import analyticsServerClient from "./analytics";
 
+export type BoulderWithMyTicks = (typeof boulders)["$inferSelect"] & {
+  ticks: (typeof ticks)["$inferSelect"][];
+};
+
 export async function getBouldersWithMyTicks() {
   const user = auth();
   const userId = (await user).userId;
@@ -27,6 +31,62 @@ export async function getBoulders() {
     orderBy: (boulder, { desc }) => desc(boulder.grade),
   });
   return boulders;
+}
+
+export async function getBouldersWithMyTicksPaginated(params: {
+  page?: number;
+  perPage?: number;
+  onlyTodos?: boolean;
+}): Promise<{ items: BoulderWithMyTicks[]; hasNextPage: boolean }> {
+  const { page = 1, perPage = 48, onlyTodos = false } = params ?? {};
+  const user = auth();
+  const userId = (await user).userId;
+
+  const offset = Math.max(0, (page - 1) * perPage);
+
+  let itemsPlusOne: BoulderWithMyTicks[];
+
+  if (onlyTodos && userId) {
+    const userTodos = await db.query.todos.findMany({
+      columns: { boulderId: true },
+      where: (todo, { eq }) => eq(todo.userId, userId),
+    });
+    const todoBoulderIds = userTodos.map((t) => t.boulderId);
+
+    if (todoBoulderIds.length === 0) {
+      return { items: [], hasNextPage: false };
+    }
+
+    itemsPlusOne = (await db.query.boulders.findMany({
+      with: {
+        ticks: {
+          where: (tick, { eq }) => eq(tick.userId, userId ?? ""),
+          orderBy: (tick, { asc }) => asc(tick.date),
+        },
+      },
+      where: (boulder, { inArray }) => inArray(boulder.id, todoBoulderIds),
+      orderBy: (boulder, { desc }) => desc(boulder.grade),
+      limit: perPage + 1,
+      offset,
+    })) as unknown as BoulderWithMyTicks[];
+  } else {
+    itemsPlusOne = (await db.query.boulders.findMany({
+      with: {
+        ticks: {
+          where: (tick, { eq }) => eq(tick.userId, userId ?? ""),
+          orderBy: (tick, { asc }) => asc(tick.date),
+        },
+      },
+      orderBy: (boulder, { desc }) => desc(boulder.grade),
+      limit: perPage + 1,
+      offset,
+    })) as unknown as BoulderWithMyTicks[];
+  }
+
+  const hasNextPage = itemsPlusOne.length > perPage;
+  const items = hasNextPage ? itemsPlusOne.slice(0, perPage) : itemsPlusOne;
+
+  return { items, hasNextPage };
 }
 
 export async function getHardestBoulderTick(userId: string) {
